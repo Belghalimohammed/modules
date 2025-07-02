@@ -1,0 +1,9 @@
+.message_avertissement p{
+        margin-bottom: 0px!important
+    }
+    
+.message_avertissement{
+    position: relative;
+    top: 70px;
+  }  
+    

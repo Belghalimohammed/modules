@@ -1,0 +1,6 @@
+name: 'Module actualité Pléiade'
+type: module
+description: 'type de contenu Actualité pour Pléiade'
+package: Pleiade
+core_version_requirement: ^9 || ^10
+core_version: 10.x

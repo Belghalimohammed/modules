@@ -1,0 +1,22 @@
+<?php
+
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_install().
+ */
+function api_pastell_pleiade_install() {
+    // Ensures the hooks contained in your module will be executed after the originals.
+    // e.g. the hook menu_ui_form_node_form_alter()
+    // Note: Weight for uninstalled modules can't be changed. 
+    module_set_weight('api_pastell_pleiade', 100);
+
+    // Warn user about config
+    $messenger = \Drupal::messenger();
+    $messenger->addStatus(t('Pour faire fonctionner une instance de Pastell avec Pléiade, vous devez <a href=":pastell_conf_url">configurer le module</a>.', [
+      ':pastell_conf_url' => Url::fromUri('internal:/admin/config/api_pastell_pleiade/settings')->toString(),
+    ]));
+  
+  }
+  

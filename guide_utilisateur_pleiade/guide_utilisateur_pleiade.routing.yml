@@ -1,0 +1,8 @@
+guide_utilisateur_pleiade.get_guide:
+  path: '/v1/guide_utilisateur_pleiade/get_guide'
+  defaults:
+    _controller: '\Drupal\guide_utilisateur_pleiade\Controller\UserGuideController::get_guide'
+    _title: 'moodle Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'

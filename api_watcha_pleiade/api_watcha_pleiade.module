@@ -1,0 +1,26 @@
+<?php
+
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @param $variables
+ */
+function api_watcha_pleiade_preprocess_page(&$variables){
+
+
+  //Add the JS library
+  $variables['#attached']['library'][] = 'api_watcha_pleiade/api_watcha_pleiade_js';
+   $variables['#attached']['library'][] = 'api_watcha_pleiade/api_watcha_pleiade_msg_js';
+
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'api_watcha_pleiade/api_watcha_pleiade_css';
+  
+  ;
+}
+function api_watcha_pleiade_preprocess_node__landing_page(&$variables) {
+  $variables['#cache']['max-age'] = 0;
+}
+
+
+
+

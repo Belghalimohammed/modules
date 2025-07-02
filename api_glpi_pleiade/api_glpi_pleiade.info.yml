@@ -1,0 +1,11 @@
+name: API Pléiade GLPI
+type: module
+description: 'API For gets tickets of GLPI instance'
+package: Pleiade
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+
+# Information 
+version: '1.0.x-dev'
+project: 'api_glpi_pleiade'
+datestamp: 1624364473

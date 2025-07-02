@@ -1,0 +1,6 @@
+module_actu_pleiade.admin:
+  title: 'API Pléiade - Paramètres du module Actualités'
+  description: 'Page de configuration du module actualités de Pléiade'
+  parent: pleiade.group.admin
+  route_name: module_actu_pleiade.settings
+  weight: 2

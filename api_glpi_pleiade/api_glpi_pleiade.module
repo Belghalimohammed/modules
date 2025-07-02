@@ -1,0 +1,32 @@
+<?php
+
+
+/**
+ * quick check modules orders of execution (default all zero)
+ * As e must be sure this one fires after our main lemon modules
+ * see https://davidjguru.github.io/blog/drupal-tips-altering-order-of-execution-in-resources
+ */
+
+
+/**
+ * @param $variables
+ */
+function api_glpi_pleiade_preprocess_page(&$variables){
+
+  $config = \Drupal::config('api_glpi_pleiade.settings');
+  $glpi_url = $config->get('glpi_url');
+  $app_token = $config->get('app_token');
+  $endpoint_ticket = $config->get('endpoint_ticket');
+$glpi_group = $config->get('glpi_group');  
+
+  //Add the JS library
+  $variables['#attached']['library'][] = 'api_glpi_pleiade/api_glpi_pleiade_js';
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'api_glpi_pleiade/api_glpi_pleiade_css';
+ $variables['#attached']['drupalSettings']['api_glpi_pleiade']['glpi_group'] = $glpi_group;
+  $variables['#attached']['drupalSettings']['api_glpi_pleiade']['glpi_url'] = $glpi_url;
+  $variables['#attached']['drupalSettings']['api_glpi_pleiade']['app_token'] = $app_token;
+  $variables['#attached']['drupalSettings']['api_glpi_pleiade']['endpoint_ticket'] = $endpoint_ticket;
+  
+   
+}

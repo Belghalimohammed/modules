@@ -1,0 +1,75 @@
+
+:root {
+    --global-color: #1f3889;
+  }
+
+
+.btn-e-coll{
+    background-color: var(--global-color)!important;
+}
+#guide_utilisateur .card-img-top {
+    width: 100%!important; 
+    max-width: 300px!important;
+    height: 110px;
+    object-fit: contain;
+    transition: transform .2s;  
+}
+#guide_utilisateur .card .card{
+    /* box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em; */
+    margin-bottom: 1rem!important;
+    padding: inherit!important;
+    border: 1px solid #d2d2d3;
+    overflow: hidden;
+    max-height: 240px;
+    height: 240px;
+}
+
+#guide_utilisateur p{
+    margin: 0 0 0 0!important;
+
+}
+#guide_utilisateur .card{
+    box-shadow: unset;
+    
+
+}
+#guide_utilisateur .slick-track{
+    padding: 0 0 1em 0;
+}
+
+#guide_utilisateur .card .card-body {
+    padding: 1rem!important;
+}
+#guide_utilisateur .card .card-body .card-title{
+    font-weight: 400;
+    max-height: 40px;
+    height: 20px;
+
+}
+#guide_utilisateur .slick-slide .card{
+    width: 250px;
+}
+.page-node-type-guide-utilisateur .field__label{
+    display: none;
+}
+#guide_utilisateur .slick-track{
+    display: flex;
+    justify-content: space-around;
+}
+.path-nos-guides-utilisateurs .views-view-responsive-grid__item h5{
+    text-transform: uppercase;
+}
+.path-nos-guides-utilisateurs .card{
+    height: 260px;
+    max-height: 260px;
+}
+#guide_utilisateur .slick-track .card:hover .card-img-top{
+    transform: scale(1.1);
+}
+#guide_utilisateur .slick-slider{
+    overflow: hidden;
+}
+#guide_utilisateur .slick-slider h4{
+    height: 65px;
+    overflow: auto;
+}

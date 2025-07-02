@@ -1,0 +1,104 @@
+<?php
+
+
+use Drupal\Core\Url;
+
+
+
+/**
+ * Implements hook_schema().
+ */
+function api_watcha_pleiade_schema() {
+  $schema['matrix_notifications'] = [
+    'description' => 'Stores Matrix notifications per user.',
+    'fields' => [
+      'uid' => [
+        'description' => 'User ID from Drupal users table.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'room_id' => [
+        'description' => 'The Matrix room ID.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'type' => [
+        'description' => 'Notification type (e.g. unread).',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ],
+      'room_name' => [
+        'description' => 'The name of the room.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ],
+      'unread' => [
+        'description' => 'Number of unread messages.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'sender' => [
+        'description' => 'Name of the message sender.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ],
+      'sender_id' => [
+        'description' => 'Matrix sender ID.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ],
+      'avatar_url' => [
+        'description' => 'Avatar URL of the sender.',
+        'type' => 'varchar',
+        'length' => 1024,
+        'not null' => FALSE,
+      ],
+      'timestamp' => [
+        'description' => 'Timestamp of the message (UNIX ms).',
+        'type' => 'int', // ✅ Ceci est essentiel
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+      'message' => [
+        'description' => 'Content of the latest message.',
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => FALSE,
+      ],
+    ],
+    'primary key' => ['uid', 'room_id'],
+    'indexes' => [
+      'uid_idx' => ['uid'],
+      'room_id_idx' => ['room_id'],
+      'timestamp_idx' => ['timestamp'],
+    ],
+  ];
+  return $schema;
+}
+
+
+
+/**
+ * Implements hook_install().
+ */
+function api_watcha_pleiade_install() {
+    // Ensures the hooks contained in your module will be executed after the originals.
+    // e.g. the hook menu_ui_form_node_form_alter()
+    // Note: Weight for uninstalled modules can't be changed. 
+    module_set_weight('api_watcha_pleiade', 101);
+
+    // Warn user about config
+    $messenger = \Drupal::messenger();
+    $messenger->addStatus(t('Pour faire fonctionner une instance de watcha avec Pléiade, vous devez <a href=":watcha_conf_url">configurer le module</a>.', [
+      ':watcha_conf_url' => Url::fromUri('internal:/admin/config/api_watcha_pleiade/settings')->toString(),
+    ]));
+  
+  }
+

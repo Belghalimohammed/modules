@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * Implements hook_system_info_alter().
+ */
+function accessibility_tools_system_info_alter(&$info, $file, $type)
+{
+  // Ajoute une nouvelle région de mise en page pour les blocs.
+  $info['regions']['accessibility_tools'] = ('Zone pour l\'Accessibilité');
+}
+
+function accessibility_tools_preprocess_page(&$variables)
+{
+  //Add the JS library
+  $variables['#attached']['library'][] = 'accessibility_tools/accessibility_tools_js';
+
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'accessibility_tools/accessibility_tools_css';
+}
+
+
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user edit form.
+ */
+/**
+ * Implements hook_form_FORM_ID_alter() for user edit form.
+ */
+
+function accessibility_tools_page_attachments(array &$attachments)
+{
+ 
+  $current_user = \Drupal::currentUser();
+
+  // Only apply for authenticated users
+  if ($current_user->isAuthenticated()) {
+    $route_match = \Drupal::routeMatch();
+    $route_name = $route_match->getRouteName();
+
+    // Skip for admin pages (like admin/* or system routes)
+    if (strpos($route_name, 'admin') === 0 || strpos($route_name, 'system.') === 0) {
+      return;
+    }
+
+    $account = \Drupal\user\Entity\User::load($current_user->id());
+
+    $is_watcha = $account->get("field_iswatchaactivated")->value ?? '';
+    $is_glpi = $account->get("field_isglpiactivated")->value ?? '';
+    $is_nextcloud =  ($account->get("field_isnextcloudactivated")->value && !empty($account->get('field_nextcloud_api_key')->value)) ? 1 : '0';
+      // \Drupal::logger('api_glpi_pleiade')->alert("between " .($account->get("field_isnextcloudactivated")->value && !empty($account->get('field_nextcloud_api_key')->value)));
+    $is_menu = $account->get("field_ismenuopened")->value ?? '';
+    $is_postit = $account->get("field_ispostitactivated")->value ?? '';
+    $js_code = <<<JS
+  ( function() {
+    
+   
+    
+      
+    
+      localStorage.setItem("isNextCloudActivated", "$is_nextcloud");
+    
+     if (!localStorage.getItem("isGlpiActivated")) {
+      localStorage.setItem("isGlpiActivated", "$is_glpi");
+    }
+     if (!localStorage.getItem("isWatchaActivated")) {
+      localStorage.setItem("isWatchaActivated", "$is_watcha");
+     }
+     if (!localStorage.getItem("menuOpen_")) {
+      localStorage.setItem("menuOpen_", "$is_menu");
+    }
+
+    if (!localStorage.getItem("isPostitActivated")) {
+      localStorage.setItem("isPostitActivated", "$is_postit");
+    }
+  
+  })();
+JS;
+
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#value' => $js_code,
+      ],
+
+      'user_fields_localstorage',
+    ];
+
+   
+  }
+}

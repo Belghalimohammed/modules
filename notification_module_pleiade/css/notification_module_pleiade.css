@@ -1,0 +1,23 @@
+.application {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .date_creation {
+    font-style: italic;
+  }
+
+#notification_alert {
+    line-height: 1; 
+    width: 420px;
+    height: 450px;
+  overflow-y: scroll;
+  }
+
+#notification_alert p{
+  white-space: break-spaces;
+}
+.alert_popup, a.pe-auto.dropdown-toggle {
+  cursor: pointer;
+}
+

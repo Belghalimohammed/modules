@@ -1,0 +1,6 @@
+api_pastell_pleiade.admin:
+  title: 'API Pléiade - Pastell module settings'
+  description: 'Page de configuration du module API Pastell Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_pastell_pleiade.settings
+  weight: 2

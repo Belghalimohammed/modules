@@ -1,0 +1,100 @@
+
+:root {
+  --global-color: #1f3889;
+}
+
+#post_it_dashboad .show{
+  height: 450px;
+}
+/* #delete-button {
+    width: 10% !important;
+   
+} */
+.btn_collapse{
+  
+  font-size: 20px;
+  background: var(--global-color);
+    color: #FFF;
+    border-radius: 4px;
+    border: none;
+}
+
+/* Style for the button element */
+#post_it_dashboad button {
+  background: var(--global-color);
+  color: #FFF;
+  padding: 0.375rem 0.75rem;
+  border: none;  
+  cursor: pointer;
+  margin: 0.2em 1em;
+  border-radius: 4px;
+  width: auto;
+  transition: all 0.3s ease;
+}
+
+/* Style for the button element on hover */
+#post_it_dashboad button:hover {
+  transform: scale(1.1);
+}
+
+.no-resize {
+    resize: none;
+  }
+/* 
+  #postit_block_id{
+    margin-bottom: 0.5rem !important;
+  }
+   */
+#post_it_dashboard .item{
+  border-radius:0 0 0 30px/45px;
+  
+  border-radius: 0;
+}
+.remove-btn{
+  font-family: 'Permanent Marker', cursive;
+}
+textarea#message{
+  width: 300px;
+}
+#post_it_dashboard .item p::-webkit-scrollbar {
+  width: 6px; /* Largeur de la barre de défilement */
+}
+
+/* Style the scrollbar thumb (#post_it_dashboard .item p) */
+#post_it_dashboard .item p::-webkit-scrollbar-thumb {
+  background-color: var(--global-color); /* Couleur de la poignée de défilement */
+  border-radius: 3px; /* Coins arrondis pour la poignée */
+}
+
+/* Style the scrollbar track on hover (#post_it_dashboard .item p) */
+#post_it_dashboard .item p::-webkit-scrollbar-track:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Couleur de la piste au survol */
+}
+
+/* Style the scrollbar thumb on hover (#post_it_dashboard .item p) */
+#post_it_dashboard .item p::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3); /* Couleur de la poignée au survol */
+}
+#post_it_dashboad #color{
+  border: unset;
+}
+#post_it_dashboard .item{
+  z-index: 999999999;
+}
+
+
+#post_it_dashboard {
+  position: relative;
+  overflow: hidden;
+}
+
+.item {
+  position: absolute;
+  z-index: 1;
+  transition: box-shadow 0.2s;
+}
+
+.item:active {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+

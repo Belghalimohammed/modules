@@ -1,0 +1,11 @@
+msg_informatif_pleiade_js:
+  js:
+    js/msg_informatif_pleiade.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+msg_informatif_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/msg_informatif_pleiade.css: {}

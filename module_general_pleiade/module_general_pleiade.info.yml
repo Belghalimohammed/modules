@@ -1,0 +1,11 @@
+name: 'Module General Pleiade'
+type: module
+package: Pleiade
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+description: 'Module général pour Pléiade, gère les fonctionnalités générales.'
+
+# Information 
+version: '1.0.x-dev'
+project: 'module_general_pleiade'
+datestamp: 1624364473

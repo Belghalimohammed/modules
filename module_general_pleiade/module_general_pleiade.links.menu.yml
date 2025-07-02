@@ -1,0 +1,6 @@
+module_general_pleiade.admin:
+  title: 'API Pléiade - Paramètres généraux du thème'
+  description: 'Page de configuration du module géénral de Pléiade'
+  parent: pleiade.group.admin
+  route_name: module_general_pleiade.settings
+  weight: 2

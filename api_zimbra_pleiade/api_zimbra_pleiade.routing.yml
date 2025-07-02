@@ -1,0 +1,33 @@
+api_zimbra_pleiade.settings:
+  path: '/admin/config/api_zimbra_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_zimbra_pleiade\Form\PleiadeConnectorZimbraConfig'
+    _title: 'API Pastell Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_zimbra_pleiade.zimbra_mails_query:
+  path: '/v1/api_zimbra_pleiade/zimbra_mails_query'
+  defaults:
+    _controller: '\Drupal\api_zimbra_pleiade\Controller\PleiadeAjaxZimbraController::zimbra_mails_query'
+    _title: 'Zimbra API Mails Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+api_zimbra_pleiade.zimbra_tasks_query:
+  path: '/v1/api_zimbra_pleiade/zimbra_tasks_query'
+  defaults:
+    _controller: '\Drupal\api_zimbra_pleiade\Controller\PleiadeAjaxZimbraController::zimbra_tasks_query'
+    _title: 'Zimbra API Tasks Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+api_zimbra_pleiade.get_full_calendar:
+  path: '/calendar'
+  defaults:
+    _controller: '\Drupal\api_zimbra_pleiade\Controller\PleiadeAjaxZimbraController::get_full_calendar'
+    _title: 'Agenda Zimbra de la semaine'
+    _format: json
+  requirements:
+    _access: 'TRUE'

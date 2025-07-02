@@ -1,0 +1,13 @@
+guide_utilisateur_pleiade_js:
+  version: 1.x
+  js:
+    js/lib/slick.js: {}
+    js/guide_utilisateur_pleiade.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+guide_utilisateur_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/guide_utilisateur_pleiade.css: {}

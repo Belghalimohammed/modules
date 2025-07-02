@@ -1,0 +1,25 @@
+<?php
+use Drupal\module_api_pleiade\ApiPleiadeManager;
+/**
+ * @param $variables
+ */
+
+function module_actu_pleiade_preprocess_page(&$variables){
+
+$config = \Drupal::config('module_actu_pleiade.settings');
+$url_site = $config->get('url_site');
+$actu_interne = $config->get('actu_interne');
+$flux_rss = $config->get('flux_rss');
+$variables['#attached']['drupalSettings']['module_actu_pleiade']['url_site'] = $url_site;
+$variables['#attached']['drupalSettings']['module_actu_pleiade']['flux_rss'] = $flux_rss;
+$variables['#attached']['drupalSettings']['module_actu_pleiade']['actu_interne'] = $actu_interne;
+
+// Add the CSS library
+  $variables['#attached']['library'][] = 'module_actu_pleiade/module_actu_pleiade_css';
+
+// Add the JS library
+  $variables['#attached']['library'][] = 'module_actu_pleiade/module_actu_pleiade_js';
+}
+
+
+

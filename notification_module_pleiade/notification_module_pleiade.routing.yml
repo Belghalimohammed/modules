@@ -1,0 +1,8 @@
+notification_module_pleiade.notification_fields:
+  path: '/v1/notification_module_pleiade/notification_fields'
+  defaults:
+    _controller: '\Drupal\notification_module_pleiade\Controller\NotificationModuleController::notification_fields'
+    _title: 'Notification à afficher'
+    _format: json
+  requirements:
+    _access: 'TRUE'

@@ -1,0 +1,6 @@
+api_watcha_pleiade.admin:
+  title: 'API Pléiade - watcha module settings'
+  description: 'Page de configuration du module API watcha Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_watcha_pleiade.settings
+  weight: 2

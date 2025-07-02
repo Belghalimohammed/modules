@@ -1,0 +1,14 @@
+module_postit_pleiade_js:
+  version: 1.x
+  js:
+    js/post_it_table.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+module_postit_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/module_postit_pleiade.css: {}
+      # css/lib/slick.css: {}
+     

@@ -1,0 +1,27 @@
+<?php
+
+
+/**
+ * @param $variables
+ */
+function api_nextcloud_pleiade_preprocess_page(&$variables){
+
+
+  $config = \Drupal::config('api_nextcloud_pleiade.settings');
+  
+  $nextcloud_url = $config->get('nextcloud_url');
+  $nextcloud_endpoint_notifs = $config->get('nextcloud_endpoint_notifs');
+$nextcloud_lemon_group = $config->get('nextcloud_lemon_group');
+   //Add the JS library
+  $variables['#attached']['library'][] = 'api_nextcloud_pleiade/api_nextcloud_pleiade_js';
+
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'api_nextcloud_pleiade/api_nextcloud_pleiade_css';
+  
+  //Pass variables to Drupal.Settings
+  $variables['#attached']['drupalSettings']['api_nextcloud_pleiade']['nextcloud_url'] = $nextcloud_url;
+ $variables['#attached']['drupalSettings']['api_nextcloud_pleiade']['nextcloud_lemon_group'] = $nextcloud_lemon_group;  
+$variables['#attached']['drupalSettings']['api_nextcloud_pleiade']['nextcloud_endpoint_notifs'] = $nextcloud_endpoint_notifs;
+}
+
+

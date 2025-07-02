@@ -1,0 +1,7 @@
+field_pastell_url: 'https://pastelldev.ecollectivites.fr/'
+field_pastell_documents_url: 'api/v2/Document'
+field_pastell_entities_url: 'api/v2/entite'
+field_pastell_limit_documents: 25
+field_pastell_flux_url: 'api/v2/Flux'
+field_pastell_ldap_group: 'pastell'
+field_pastell_auth_method: 'cas'

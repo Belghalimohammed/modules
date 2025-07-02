@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @param $variables
+ */
+function api_zimbra_pleiade_preprocess_page(&$variables){
+
+
+  $config = \Drupal::config('api_zimbra_pleiade.settings');
+  
+  $field_zimbra_auth_method = $config->get('field_zimbra_auth_method');
+  $field_zimbra_mail = $config->get('field_zimbra_mail');
+  $field_zimbra_agenda = $config->get('field_zimbra_agenda');
+  $field_zimbra_for_demo = $config->get('field_zimbra_for_demo');
+  $lemon_group = $config->get('lemon_group');
+  //Add the JS library
+  $variables['#attached']['library'][] = 'api_zimbra_pleiade/api_zimbra_pleiade_js';
+
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'api_zimbra_pleiade/api_zimbra_pleiade_css';
+  
+  
+  //Pass variables to Drupal.Settings
+  $variables['#attached']['drupalSettings']['api_zimbra_pleiade']['field_zimbra_auth_method'] = $field_zimbra_auth_method;
+  $variables['#attached']['drupalSettings']['api_zimbra_pleiade']['field_zimbra_agenda'] = $field_zimbra_agenda;
+  $variables['#attached']['drupalSettings']['api_zimbra_pleiade']['field_zimbra_mail'] = $field_zimbra_mail;
+  $variables['#attached']['drupalSettings']['api_zimbra_pleiade']['field_zimbra_for_demo'] = $field_zimbra_for_demo;
+  $variables['#attached']['drupalSettings']['api_zimbra_pleiade']['lemon_group'] = $lemon_group;
+}
+function api_zimbra_pleiade_preprocess_node__landing_page(&$variables) {
+  $variables['#cache']['max-age'] = 0;
+}

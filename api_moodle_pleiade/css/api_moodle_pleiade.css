@@ -1,0 +1,47 @@
+
+:root {
+    --global-color: #1f3889;
+  }
+
+
+.btn-e-coll{
+    background-color: var(--global-color)!important;
+    
+}
+#moodle_courses .card-img-top {
+    width: 100%!important; 
+    max-width: 300px!important;
+    height: 120px;
+    object-fit: cover;
+}
+#moodle_courses .card .card{
+    /* box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em; */
+    margin-bottom: 1rem!important;
+    padding: inherit!important;
+}
+
+#moodle_courses p{
+    margin: 0 0 0 0!important;
+
+}
+#moodle_courses .card{
+    box-shadow: unset;
+}
+#moodle_courses .slick-track{
+    padding: 0 0 1em 0;
+}
+#moodle_courses .card .card-title{
+    max-height: 40px;
+    height: 40px;
+    
+}
+#moodle_courses .card .card-body {
+    padding: 1rem!important;
+}
+#moodle_courses .card .card-body .card-title{
+    font-weight: 400;
+
+}
+#moodle_courses .slick-slide .card{
+    width: 250px;
+}

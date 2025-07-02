@@ -1,0 +1,6 @@
+api_zimbra_pleiade.admin:
+  title: 'API Pléiade - Zimbra module settings'
+  description: 'Page de configuration du module API Zimbra Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_zimbra_pleiade.settings
+  weight: 2

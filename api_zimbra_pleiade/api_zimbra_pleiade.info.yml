@@ -1,0 +1,14 @@
+name: API Pléiade SSO Zimbra
+type: module
+description: 'API connector Zimbra for Pléiade dashboard'
+# package: Pleiade Zimbra
+package: Pleiade
+# version: 8.x +
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+dependencies:
+  - module_api_pleiade
+# Information 
+version: '1.0.x-dev'
+project: 'api_zimbra_pleiade'
+datestamp: 1624364473

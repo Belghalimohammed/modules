@@ -1,0 +1,12 @@
+name: Module Post-it Pléiade
+type: module
+description: 'Module Post-it pour Pléiade'
+# package: Pleiade User Infos
+package: Pleiade
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+
+# Information 
+version: '1.0.x-dev'
+project: 'module_postit_pleiade'
+datestamp: 1624364473

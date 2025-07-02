@@ -1,0 +1,13 @@
+name: API Pléiade Users Infos
+type: module
+description: 'API For gets Users Infos for Pléiade'
+# package: Pleiade User Infos
+package: Pleiade
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+
+# Information 
+version: '1.0.x-dev'
+project: 'api_user_pleiade'
+datestamp: 1624364473
+weight: 20

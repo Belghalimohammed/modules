@@ -1,0 +1,13 @@
+module_actu_pleiade_js:
+  js:
+    js/lib/slick.js: {}
+    js/module_actu_pleiade.js: {}
+    
+  dependencies:
+    - core/drupal
+    - core/once
+module_actu_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/module_actu_pleiade.css: {}

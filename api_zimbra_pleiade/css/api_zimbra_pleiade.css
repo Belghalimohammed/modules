@@ -1,0 +1,181 @@
+:root {
+    --global-color: #1f3889;
+}
+
+.fc-scrollgrid-sync-table,
+.fc-scrollgrid-section-header {
+    display: none;
+}
+
+th.d-flex.expediteur {
+    width: 20%;
+}
+
+.content-mail {
+    width: 480px;
+}
+
+.mail_content:hover {
+    color: var(--global-color) !important;
+    transform: scale(1.03);
+}
+
+.mail_content {
+    color: initial !important;
+    transition: transform .2s;
+}
+
+#main-wrapper[data-sidebartype=full] .fc-media-screen .fc-timegrid-cols>table {
+    width: 85% !important;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+    border-radius: calc(0.25rem - 0px) calc(0.25rem - 0px) 0 0;
+    border-top-left-radius: 4px !important;
+    border-top-right-radius: 4px !important;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid #e9ecef !important;
+    display: flex;
+}
+
+.fc .fc-toolbar-title {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 1.125rem !important;
+
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    border-bottom: none !important;
+    padding: 0.5rem 1.25rem;
+}
+
+#zimbra_mail .card {
+    margin-bottom: 0 !important;
+}
+
+.fc-v-event {
+    border: inherit !important;
+    border-left: 3px solid var(--fc-event-bg-color);
+    opacity: 0.88;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.fc-event-content {
+    height: 100%;
+}
+
+
+
+
+
+img.profile-pic.rounded-circle {
+    object-fit: cover;
+}
+
+.scroll_on_table {
+    max-height: 450px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+body[data-theme=dark] .fc .fc-toolbar.fc-header-toolbar {
+    background-color: inherit !important;
+    border-bottom: 1px solid #e9ecef33 !important;
+}
+
+body[data-theme=dark] .fc-toolbar-title {
+    color: #e9ecef !important;
+}
+
+body[data-theme=dark] #pastell_block .feather,
+body[data-theme=dark] #zimbra_mail .feather,
+body[data-theme=dark] .page-link {
+    color: #e9ecef !important;
+}
+
+table.dataTable tbody tr {
+    background-color: inherit !important;
+}
+
+body[data-theme=dark] .page-link:hover {
+    border: 2px solid #dee2e6;
+
+}
+
+body[data-theme=dark] .fc td.fc-timegrid-slot {
+    background-color: #272b34 !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px grey;
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: grey;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #272b34;
+}
+
+#zimbra_block_mail_id {
+    background-color: #FFF;
+}
+
+body[data-theme=dark] #zimbra_block_mail_id {
+    background-color: #272b34 !important;
+}
+
+[data-theme="dark"] .page-wrapper a,
+[data-theme="dark"] aside a {
+    color: #FFF !important;
+}
+
+
+.scroll_on_table {
+    height: 400px;
+
+}
+
+
+
+
+@media (max-width: 768px) {
+
+    .scroll_on_table {
+        height: 350px;
+
+    }
+
+  
+   
+}
+
+
+#zimbra_block_agenda_id {
+    margin-bottom: 5px;
+}
+
+.fc .fc-scroller-harness-liquid {
+    height: 370px;
+}

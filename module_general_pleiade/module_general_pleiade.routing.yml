@@ -1,0 +1,8 @@
+module_general_pleiade.settings:
+  path: '/admin/config/module_general_pleiade/settings'
+  defaults:
+    _form: '\Drupal\module_general_pleiade\Form\ModuleGeneralPleiadeConfigForm'
+    _title: 'Paramètre de thème pour Pléiade'
+  requirements:
+    _permission: 'administer site configuration'
+    

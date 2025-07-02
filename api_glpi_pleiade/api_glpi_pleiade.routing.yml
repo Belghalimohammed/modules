@@ -1,0 +1,34 @@
+api_glpi_pleiade.settings:
+  path: '/admin/config/api_glpi_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_glpi_pleiade\Form\GlpiFields'
+    _title: 'GLPI Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_glpi_pleiade.glpi_list_tickets:
+  path: '/v1/api_glpi_pleiade/glpi_list_tickets'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::glpi_list_tickets'
+    _title: 'Tickets Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+api_glpi_pleiade.getGLPITicketsCount:
+  path: '/v1/api_glpi_pleiade/getGLPITicketsCount'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::getGLPITicketsCount'
+    _title: 'Tickets Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+
+api_glpi_pleiade.glpi_tickets:
+  path: '/glpi_tickets'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::glpi_tickets'
+    _title: 'Liste des tickets GLPI'
+  requirements:
+    _permission: 'access content'

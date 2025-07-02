@@ -1,0 +1,38 @@
+<?php
+
+
+/**
+ * quick check modules orders of execution (default all zero)
+ * As e must be sure this one fires after our main lemon modules
+ * see https://davidjguru.github.io/blog/drupal-tips-altering-order-of-execution-in-resources
+ */
+
+
+/**
+ * @param $variables
+ */
+function api_moodle_pleiade_preprocess_page(&$variables){
+
+  $config = \Drupal::config('api_moodle_pleiade.settings');
+  $moodle_url = $config->get('moodle_url');
+  $username_moodle = $config->get('username_moodle');
+  $password_moodle = $config->get('password_moodle');
+  $function_moodle = $config->get('function_moodle');
+  $services_moodle = $config->get('services_moodle');
+  
+
+  //Add the JS library
+  $variables['#attached']['library'][] = 'api_moodle_pleiade/api_moodle_pleiade_js';
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'api_moodle_pleiade/api_moodle_pleiade_css';
+
+  $variables['#attached']['drupalSettings']['api_moodle_pleiade']['moodle_url'] = $moodle_url;
+  $variables['#attached']['drupalSettings']['api_moodle_pleiade'] = [
+  'moodle_url' => $moodle_url,
+  'username_moodle' => $username_moodle,
+  'password_moodle' => $password_moodle,
+  'function_moodle' => $function_moodle,
+  'services_moodle' => $services_moodle,
+];
+   
+}

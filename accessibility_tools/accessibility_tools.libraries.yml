@@ -1,0 +1,13 @@
+accessibility_tools:
+  version: 1.0
+  js:
+    js/accessibility_tools.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - drupal:block
+accessibility_tools_css:
+  version: 1.x
+  css:
+    theme:
+      css/accessibility_tools.css: {}

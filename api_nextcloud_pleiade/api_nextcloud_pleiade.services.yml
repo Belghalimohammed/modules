@@ -1,0 +1,4 @@
+services:
+  api_nextcloud_pleiade.nextcloud_controller:
+    class: '\Drupal\api_nextcloud_pleiade\Controller\NextcloudController'
+    arguments: ['@http_client','@config.factory']

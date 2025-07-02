@@ -1,0 +1,16 @@
+api_parapheur_pleiade.settings:
+  path: '/admin/config/api_parapheur_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_parapheur_pleiade\Form\PleiadeParapheurApiFieldsConfig'
+    _title: 'API IParapheur Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_parapheur_pleiade.parapheur_entities_query:
+  path: '/v1/api_parapheur_pleiade/parapheur_entities_query'
+  defaults:
+    _controller: '\Drupal\api_parapheur_pleiade\Controller\PleiadeAjaxParapheurController::parapheur_entities_query'
+    _title: 'IParapheur API Entities Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'

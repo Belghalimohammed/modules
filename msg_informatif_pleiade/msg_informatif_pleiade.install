@@ -1,0 +1,117 @@
+<?php
+
+function msg_informatif_pleiade_install()
+{
+        $existing_type = \Drupal\node\Entity\NodeType::load('message_informatif');
+
+        if (!$existing_type) {
+                // Le type de contenu n'existe pas, le créer.
+                $news_type = \Drupal\node\Entity\NodeType::create([
+                        'type' => 'message_informatif',
+                        'name' => 'Message informatif',
+                        'description' => 'Type de contenu pour les messages informatif à afficher en haut du bureau.',
+                        'display_submitted' => TRUE,
+                        'preview_mode' => 'default',
+                        'help' => '',
+                ]);
+                $news_type->save();
+
+                // Ajouter un champ 'description'.
+                $field_description_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+                        'field_name' => 'field_message_a_afficher',
+                        'entity_type' => 'node',
+                        'type' => 'text_long',
+                ]);
+                $field_description_storage->save();
+
+                $field_description_instance = \Drupal\field\Entity\FieldConfig::create([
+                        'field_storage' => $field_description_storage,
+                        'bundle' => 'message_informatif',
+                        'label' => 'Description',
+                        'required' => TRUE,
+                        // Spécifier le format de texte complet HTML.
+                        'settings' => [
+                                'text_processing' => 0,
+                        ],
+                ]);
+                $field_description_instance->save();
+
+                $field_nom_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+                        'field_name' => 'field_importance_du_message',
+                        'entity_type' => 'node',
+                        'type' => 'list_string', // Utiliser le type 'list_string' pour une liste de chaînes.
+                        'settings' => [
+                                'allowed_values' => [
+                                        'Informatif' => 'Informatif',
+                                        'Avertissement' => 'Avertissement',
+                                        'Attention' => 'Attention',
+                                ],
+                        ],
+                ]);
+                $field_nom_storage->save();
+
+                $field_nom_instance = \Drupal\field\Entity\FieldConfig::create([
+                        'field_storage' => $field_nom_storage,
+                        'bundle' => 'message_informatif',
+                        'label' => 'Importance du message',
+                        'required' => FALSE,
+                ]);
+                $field_nom_instance->save();
+
+                // Activer les champs sur le formulaire d'affichage du type de contenu.
+                $entity_display_repository = \Drupal::service('entity_display.repository');
+                $form_display = $entity_display_repository->getFormDisplay('node', 'message_informatif', 'default');
+
+                // Activer l'affichage du champ 'field_description'.
+                $form_display->setComponent('field_message_a_afficher', ['type' => 'text_textarea']);
+
+                // Activer l'affichage du champ 'field_importance_du_message'.
+                $form_display->setComponent('field_importance_du_message', ['type' => 'text_textfield']);
+
+                $form_display->save();
+                // Vider le cache pour appliquer les changements.
+                drupal_flush_all_caches();
+        }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function msg_informatif_pleiade_uninstall()
+{
+        // Delete all nodes of type 'message_informatif'.
+        $query = \Drupal::entityQuery('node')
+                ->condition('type', 'message_informatif')
+                ->accessCheck(TRUE);
+        $nids = $query->execute();
+        $query = \Drupal::entityQuery('node')
+                ->condition('type', 'message_informatif')
+                ->accessCheck(FALSE); // Disable access checks for uninstallation.
+        $nids = $query->execute();
+
+        foreach ($nids as $nid) {
+                $node = \Drupal\node\Entity\Node::load($nid);
+                if ($node) {
+                        $node->delete();
+                }
+        }
+
+        // Check if the field exists before attempting to delete it.
+        if ($field_description = \Drupal\field\Entity\FieldStorageConfig::loadByName('node', 'field_message_a_afficher')) {
+                $field_description->delete();
+        }
+        if ($field_description = \Drupal\field\Entity\FieldStorageConfig::loadByName('node', 'field_importance_du_message')) {
+                $field_description->delete();
+        }
+
+        // Delete the type of content.
+        if ($node_type = \Drupal::entityTypeManager()->getStorage('node_type')->load('message_informatif')) {
+                $node_type->delete();
+        }
+
+        // Clear the cache to apply the changes.
+        \Drupal::entityTypeManager()->clearCachedDefinitions();
+        // Cache la configuration pour que les changements prennent effet.
+        drupal_flush_all_caches();
+}
+

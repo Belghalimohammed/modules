@@ -1,0 +1,130 @@
+.form-type-radio .description, .form-type-checkbox .description{
+      margin-left: 0!important;  
+}
+#api-pastell-pleiade-doc-lot-settings-form {
+	width: 60%;
+	border: 1px solid #ccc;
+	background: #ffffff;
+	float: left;
+	padding: 1.2em;
+}
+
+#previsu {
+	width: 32%;
+	position: absolute;
+	/* top: 17%; */
+	right: 7.5%;
+	background: #fff;
+	/* min-height: 300px; */
+	padding: 1.2em;
+	max-height: 100%;
+	overflow: auto;
+	border: 2px solid #1f3889;
+}
+
+#previsu h3, #previsu h2 {
+	font-size: 16px;
+	color: #1f3889;
+	font-weight: bold;
+}
+
+#doclotform .form-item-id-e-lot {
+	font-size: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+
+#doclotform label,
+#doclotform input,
+#doclotform select {
+	font-size: 1em;
+}
+#edit-soustype{
+	height: unset!important;
+}
+
+#edit-datelimite, #edit-soustype{
+	width: 70%;
+}
+
+#edit-datelimite .form-item select {
+	width: 100%;
+}
+
+.form-item-id-e-lot label {
+	display: none;
+}
+
+.form-item-id-e-lot {
+	visibility: hidden;
+	height: 0%;
+	width: 20% !important;
+	display: none;
+}
+
+.expli {
+	font-size: 1em;
+	font-weight: bold;
+	color: #1f3889;
+	/*background: #fff;*/
+	
+	border-bottom: 2px solid #1f3889;
+	margin: .5em 0 1em 0;
+	text-transform: uppercase;
+}
+
+.expli span {
+    font-size: 1.5em;
+    display: inline-block;
+    color: #1f3889;
+    /* border: 1px solid #1f3889; */
+    /* background: #ff9900; */
+    background: transparent;
+    /* padding: 2px 8px; */
+    /* border-radius: 200px 200px; */
+    margin-right: 0.6em;
+    
+}
+
+#edit-content-upload-button {
+	color: #fff !important;
+	text-transform: uppercase;
+	background: #1f3889;
+	width: 100% !important;
+	max-width: 100% !important;
+	text-align: center !important;
+	font-size: 1.2em;
+	margin: 0!important;
+}
+#edit-soustype {
+	background: #fff !important;
+}
+.api-pastell-pleiade-doc-lot-settings-form .form-item label{
+	font-weight: 600;
+}
+.api-pastell-pleiade-doc-lot-settings-form .form-check-input:checked{
+	background-color: #1f3889;
+}
+
+.path-lots h1{
+	display: none;
+}
+
+#ficinfo {
+
+	padding: 0.3em;
+	display: flex;
+	color: #ff6347;
+	border: 2px solid #ff6347;
+	align-items: center;
+	margin: 2em 0;
+}
+#ficinfo p{
+margin-bottom: 0;
+
+}
+#ficinfo i{
+	font-size: xx-large;
+	padding: 0 0.5em;
+}

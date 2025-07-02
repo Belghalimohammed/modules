@@ -1,0 +1,65 @@
+api_user_pleiade.settings:
+  path: '/admin/config/api_user_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_user_pleiade\Form\PleiadeUserFieldsConfig'
+    _title: 'User Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_user_pleiade.user_infos:
+  path: '/v1/api_user_pleiade/user_infos'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::user_infos'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _access: 'TRUE'
+
+api_user_pleiade.user_list_query:
+  path: '/v1/api_user_pleiade/user_list_query'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::user_list_query'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _access: 'TRUE'
+
+
+api_user_pleiade.user_add_application:
+  path: '/v1/api_user_pleiade/user_add_application'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::user_add_application'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: 'access content' 
+
+api_user_pleiade.user_delete_application:
+  path: '/v1/api_user_pleiade/user_delete_application'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::user_delete_application'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: 'access content' 
+
+
+
+
+
+api_user_pleiade.setVariables:
+  path: '/v1/api_user_pleiade/setVariables'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::setVariables'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: 'access content' 
+
+
+

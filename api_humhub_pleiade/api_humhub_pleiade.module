@@ -1,0 +1,27 @@
+
+<?php 
+/**
+ * @param $variables
+ */
+function api_humhub_pleiade_preprocess_page(&$variables){
+
+  $config = \Drupal::config('api_humhub_pleiade.settings');
+  
+  $humhub_url = $config->get('humhub_url');
+  $sql_server = $config->get('sql_server');
+  $sql_user = $config->get('sql_user');
+  $sql_password = $config->get('sql_password');
+  $sql_database = $config->get('sql_database');
+
+  $variables['#attached']['drupalSettings']['api_humhub_pleiade']['humhub_url'] = $humhub_url;
+  $variables['#attached']['drupalSettings']['api_humhub_pleiade']['sql_server'] = $sql_server;
+  $variables['#attached']['drupalSettings']['api_humhub_pleiade']['sql_user'] = $sql_user;
+  $variables['#attached']['drupalSettings']['api_humhub_pleiade']['sql_password'] = $sql_password;
+  $variables['#attached']['drupalSettings']['api_humhub_pleiade']['sql_database'] = $sql_database;
+
+  $variables['#attached']['library'][] = 'api_humhub_pleiade/api_humhub_pleiade_js';
+  $variables['#attached']['library'][] = 'api_humhub_pleiade/api_humhub_pleiade_css';
+
+ 
+
+}

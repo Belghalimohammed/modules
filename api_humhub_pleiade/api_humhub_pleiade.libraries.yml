@@ -1,0 +1,13 @@
+api_humhub_pleiade_js:
+  version: 1.x
+  js:
+    js/api_humhub_pleiade.js: {}
+    js/api_humhub_pleiade_block.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+api_humhub_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/api_humhub_pleiade.css: {}

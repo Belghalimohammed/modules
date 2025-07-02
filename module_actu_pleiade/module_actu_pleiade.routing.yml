@@ -1,0 +1,19 @@
+
+module_actu_pleiade.actu_list:
+  path: '/v1/module_actu_pleiade/actu_list'
+  defaults:
+    _controller: '\Drupal\module_actu_pleiade\Controller\ActuPleiadeController::actu_list'
+    _title: 'Alerte à afficher'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+
+module_actu_pleiade.settings:
+  path: '/admin/config/module_actu_pleiade/settings'
+  defaults:
+    _form: '\Drupal\module_actu_pleiade\Form\ActuFormController'
+    _title: 'Paramètre du module actu pour Pléiade'
+  requirements:
+    _permission: 'administer site configuration'
+    

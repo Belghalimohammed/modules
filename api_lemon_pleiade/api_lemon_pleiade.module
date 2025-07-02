@@ -1,0 +1,73 @@
+<?php
+
+// Use Drupal private tempstore to serve to other modules later
+use Drupal\user\PrivateTempStoreFactory;
+
+/**
+ * @param $variables
+ */
+function api_lemon_pleiade_preprocess_page(&$variables){
+
+  $config = \Drupal::config('api_lemon_pleiade.settings');
+
+  $field_lemon_block_id = $config->get('field_lemon_block_id');
+  $field_lemon_url = $config->get('field_lemon_url');
+  $field_lemon_myapps_url = $config->get('field_lemon_myapps_url');
+  $field_lemon_sessioninfo_url = $config->get('field_lemon_sessioninfo_url');
+  $field_lemon_totp_url = $config->get('field_lemon_totp_url');
+  
+  // Get groups in Drupal private tempstore to serve to other modules later
+   $tempstore = \Drupal::service('tempstore.private'); 
+   $store = $tempstore->get('api_lemon_pleiade');
+   $groups = $store->get('groups');
+
+  
+  // Add the CSS library
+  $variables['#attached']['library'][] = 'api_lemon_pleiade/api_lemon_pleiade_css';
+
+  // Add the JS library
+  
+
+  // Pass variables to Drupal.Settings
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['field_lemon_url'] = $field_lemon_url;
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['field_lemon_myapps_url'] = $field_lemon_myapps_url;
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['field_lemon_sessioninfo_url'] = $field_lemon_sessioninfo_url;
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['field_lemon_totp_url'] = $field_lemon_totp_url;
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['user_groups'] =  $groups;
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['field_lemon_block_id'] =  $field_lemon_block_id;
+  $variables['#attached']['library'][] = 'api_lemon_pleiade/api_lemon_pleiade_js';
+  // Define spinner for our JS modules
+  $variables['#attached']['drupalSettings']['api_lemon_pleiade']['spinner'] = 
+   ' <div class="d-flex justify-content-center align-items-center"><div id="spinner-div-menu" class="spinner-border text-primary" role="status"></div></div>';
+
+} 
+
+
+// function api_lemon_pleiade_page_attachments(array &$page) {
+
+//   if (\Drupal::service('path.matcher')->isFrontPage()) {
+//   $page['#attached']['library'][] = 'api_lemon_pleiade/sortable_pleiade_js';
+//   }
+// }
+
+
+
+/**
+ * Implements hook_library_info_alter().
+ * 
+ * https://www.drupal.org/project/drupal/issues/3274688
+ * 
+ */
+function api_lemon_pleiade_library_info_alter(&$libraries, $extension) {
+  foreach ($libraries as &$library) {
+    if (!in_array('core/jquery.once', $library['dependencies'] ?? [])) {
+      continue;
+    }
+    $dependencies = array_filter($library['dependencies'] ?? [], function ($item) {
+      return $item != 'core/jquery.once';
+    });
+    $dependencies[] = 'core/once';
+    $dependencies[] = 'core/jquery.once.bc';
+    $library['dependencies'] = $dependencies;
+  }
+}

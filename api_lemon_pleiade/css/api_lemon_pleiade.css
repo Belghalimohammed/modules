@@ -1,0 +1,220 @@
+:root {
+    --global-color: #1f3889;
+    --text-menu-color: #1f3889;
+}
+
+
+.sidebar-nav ul .nav-small-cap {
+    font-size: 16px;
+    line-height: 40px;
+    color: var(--text-menu-color);
+    opacity: 1;
+    /* font-weight: 600; */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 1.5em 0 0.2em;
+    text-transform: uppercase;
+    color: var(--global-color);
+
+}
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar:hover .sidebar-nav ul .nav-small-cap {
+    font-size: 16px;
+    line-height: 40px;
+    color: var(--text-menu-color);
+    opacity: 1;
+    /* font-weight: 600; */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0.5em 0;
+    text-transform: uppercase;
+    color: var(--global-color);
+    
+
+}
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar:hover .sidebar-nav ul .nav-small-cap i{
+    line-height: 30px;
+    margin: 0 5px;
+    font-size: 20px;
+    padding: 0 0.3em 0 0;
+}
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar:hover .sidebar-nav .has-arrow::after{
+    top: 25px!important;
+}
+.sidebar-nav ul .nav-small-cap:hover{
+    color: #fbbd52!important;
+    transition: all 0.2s ease 0s;
+
+}
+.sidebar-nav ul .nav-small-cap:hover .has-arrow::after{
+    border-color: unset;
+}
+.sidebar-nav ul .nav-small-cap[aria-expanded="true"], .sidebar-link[aria-expanded="true"]{
+    color: #fbbd52!important;
+}
+
+body[data-theme=dark] .navbar-brand {
+    background-color: #272b34 !important;
+}
+
+body[data-theme=dark] .left-sidebar, body[data-theme=dark] .sidebar-footer {
+    background-color: #323743 !important;
+}
+
+body[data-theme=dark] .nav-small-cap, body[data-theme=dark] #menuLemon .sidebar-link, body[data-theme=dark] .sidebar-nav ul .sidebar-item .sidebar-link, body[data-theme=dark] #mes_applications .sidebar-link {
+    color: #fff !important;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .sidebar-nav ul .nav-small-cap {
+    padding: 0.4em 0
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar .show{
+    display: none;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .navbar-brand, #main-wrapper[data-layout=vertical][data-sidebartype=full] .navbar-nav {
+    border: unset;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .sidebar-nav ul .nav-small-cap i {
+    padding: unset;
+}
+
+.sidebar-nav ul .nav-small-cap i {
+    line-height: 30px;
+    margin: 0 5px;
+    font-size: 20px;
+    padding: 0 0.3em 0 0;
+
+}
+
+.sidebar-nav .has-arrow {
+    position: relative;
+}
+
+.sidebar-nav .has-arrow::after {
+    position: absolute;
+    content: "";
+    width: 0.3em;
+    height: 0.3em;
+    margin-left: 10px;
+/*    top: 19px !important; */
+    right: 15px !important;
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+    
+}
+
+.sidebar-nav .accordion-body .has-arrow::after {
+
+    top: 14px !important;
+
+}
+
+.sidebar-nav .has-arrow[aria-expanded=true]::after {
+
+    transform: rotate(-135deg) translate(0, 7%) !important;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=full] .sidebar-nav ul .nav-small-cap {
+    padding: 0px 20px 0px 10px;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] #menuLemon .sidebar-link,
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .sidebar-nav ul .sidebar-item .sidebar-link,
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] #mes_applications .sidebar-link,
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] #menuLemon .sidebar-link {
+    padding: 0.2em 0 !important;
+    border: unset !important;
+    justify-content: center;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=full] .light-logo {
+    height: 30px !important;
+    margin: unset;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=full] .logo-icon, #main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] #interactive_guid {
+    display: none;
+}
+
+.sidebar-footer a:hover {
+    color: #fff !important;
+    transition: all 0.3s ease 0s;
+}
+
+.accordion-body {
+    padding: 0rem 0rem 0rem 0 !important;
+}
+
+.feather {
+    margin: 0 2px 0 5px !important;
+}
+
+div.long-category span.hide-menu {
+    line-height: 20px;
+    padding: 0px 12px 0 0px;
+}
+
+#block_appli_lemon div:first-child i, #block_appli_lemon div:first-child img {
+    width: 50px;
+    height: 50px;
+}
+
+#block_appli_lemon a:hover {
+    color: var(--global-color);
+}
+
+#main-wrapper[data-sidebartype=mini-sidebar] #sidebarnav:not(.extended_menu) i.fa:not(.fa-book) {
+    margin: 0 15px !important;
+}
+
+#menuLemon .sidebar-link, .sidebar-nav ul .sidebar-item .sidebar-link, #mes_applications .sidebar-link {
+    padding: 2px 0 0 15px;
+    display: flex;
+    /* white-space: nowrap; */
+    align-items: center;
+    position: relative;
+    line-height: 25px;
+    font-size: 18px;
+    opacity: 0.8;
+    color: var(--text-menu-color);
+    border-left: 3px solid transparent;
+}
+
+#menuLemon .sidebar-nav .has-arrow::after {
+    top: 15px !important;
+    right: 3px !important;
+}
+
+#lemon_block_id i {
+    color: inherit !important;
+}
+
+.path-user #sidebarnav hr {
+    display: none;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar:hover #interactive_guid,
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar:hover .sidebar-nav .nav-small-cap i{
+    display: initial;
+}
+
+.path-nos-solutions a[href="/nos-solutions"], 
+.path-nos-formations a[href="/nos-formations"],
+.path-nos-formations #main-wrapper[data-layout=vertical][data-sidebartype=full] .sidebar-nav ul [data-bs-target="#collapse6"],
+.path-nos-solutions #main-wrapper[data-layout=vertical][data-sidebartype=full] .sidebar-nav ul [data-bs-target="#collapse6"]
+{
+    color: #fbbd52!important;
+}
+/* .sub_menu_eadmin {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.7s ease-out; 
+}
+
+.sub_menu_eadmin.show {
+    max-height: 500px; 
+} */

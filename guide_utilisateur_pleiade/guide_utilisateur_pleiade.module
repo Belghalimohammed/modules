@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @param $variables
+ */
+function guide_utilisateur_pleiade_preprocess_page(&$variables){
+
+  //Add the JS library
+  $variables['#attached']['library'][] = 'guide_utilisateur_pleiade/guide_utilisateur_pleiade_js';
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'guide_utilisateur_pleiade/guide_utilisateur_pleiade_css';
+  
+}

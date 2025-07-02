@@ -1,0 +1,6 @@
+api_user_pleiade.admin:
+  title: 'API Pléiade - User module settings'
+  description: 'Page de configuration du module User Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_user_pleiade.settings
+  weight: 2

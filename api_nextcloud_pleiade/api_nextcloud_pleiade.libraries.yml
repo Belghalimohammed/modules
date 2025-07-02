@@ -1,0 +1,12 @@
+api_nextcloud_pleiade_js:
+  version: 1.x
+  js:
+    js/api_nextcloud_pleiade.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+api_nextcloud_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/api_nextcloud_pleiade.css: {}

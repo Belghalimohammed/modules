@@ -1,0 +1,6 @@
+api_humhub_pleiade.admin:
+  title: 'API Pléiade - Humhub module settings'
+  description: 'Page de configuration du module API Humhub Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_humhub_pleiade.settings
+  weight: 2

@@ -1,0 +1,6 @@
+services:
+  api_parapheur_pleiade.parapheur_service:
+    class: 'Drupal\api_parapheur_pleiade\Service\PleiadeAjaxParapheurService'
+    arguments: []
+
+

@@ -1,0 +1,11 @@
+notification_module_pleiade_js:
+  js:
+    js/notification_module_pleiade.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+notification_module_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/notification_module_pleiade.css: {}

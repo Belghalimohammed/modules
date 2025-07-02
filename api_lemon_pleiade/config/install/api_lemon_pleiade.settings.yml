@@ -1,0 +1,9 @@
+field_lemon_url: "https://authdev.ecollectivites.fr"
+
+field_lemon_myapps_url: "myapplications" 
+
+field_lemon_sessioninfo_url: "session/my/global"
+
+field_lemon_totp_url: "totp"
+
+field_lemon_block_id: 1

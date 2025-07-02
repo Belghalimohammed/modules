@@ -1,0 +1,6 @@
+api_glpi_pleiade.admin:
+  title: 'API Pléiade - GLPI module settings'
+  description: 'Page de configuration du module GLPI Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_glpi_pleiade.settings
+  weight: 2

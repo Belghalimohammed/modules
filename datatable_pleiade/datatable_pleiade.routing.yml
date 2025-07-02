@@ -1,0 +1,8 @@
+datatable_pleiade.documents_recents:
+  path: '/v1/datatable_pleiade/documents_recents'
+  defaults:
+    _controller: '\Drupal\datatable_pleiade\Controller\DatatableController::documents_recents'
+    _title: 'Get Docuemnts recents'
+    _format: json
+  requirements:
+    _access: 'TRUE'

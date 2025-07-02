@@ -1,0 +1,51 @@
+#collectiviteChoice{
+  border: 1px solid #1f3889!important;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 15px;
+  height: 40px;
+
+}
+.pastille{
+  background-color: #f34949;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  margin: 0 0.5em;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #fff;
+  opacity: 1!important;
+}
+.pastille_collab .pastille, #echangersurlerseausocial .pastille{
+  background-color: #0dcaf0;
+}
+
+.sub_menu_eadmin a, .sub_menu_eadmin>span{
+  padding: 0 0 0 1.5em;
+  font-size: 15px;
+  color: #1f3889!important;
+}
+.sub_menu_eadmin a:hover, .sub_menu_eadmin span:hover{
+  
+  color: #fbbd52!important;
+  transition: all 0.2s ease 0s;
+}
+.sub_menu_eadmin{
+  display: flex;
+  flex-direction: column;
+}
+
+#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar .badge{
+  padding: 3px 5px!important;
+  font-size: 0.5rem;
+
+}
+#main-wrapper[data-layout=vertical][data-sidebartype=full] .fa-people-arrows .rounded-pill{
+  display: none;
+}
+#a_traiter {
+  color: #f34949;
+}
+

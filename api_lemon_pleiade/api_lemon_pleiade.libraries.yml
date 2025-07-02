@@ -1,0 +1,16 @@
+api_lemon_pleiade_js:
+  js:
+    js/libs/sortable.min.js: {}
+    js/api_lemon_pleiade_sidebar_menu.js: {}
+    js/api_lemon_pleiade_user_infos_block.js: {}
+    js/add_submenu.js: {}
+
+  dependencies:
+    - core/drupal
+    - core/once
+api_lemon_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/api_lemon_pleiade.css: {}  
+      

@@ -1,0 +1,6 @@
+api_nextcloud_pleiade.admin:
+  title: 'API Pléiade - Nextcloud module settings'
+  description: 'Page de configuration du module API Nextcloud Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_nextcloud_pleiade.settings
+  weight: 2

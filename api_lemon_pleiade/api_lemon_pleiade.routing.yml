@@ -1,0 +1,41 @@
+api_lemon_pleiade.settings:
+  path: '/admin/config/api_lemon_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_lemon_pleiade\Form\PleiadeSSOapiFieldsConfig'
+    _title: 'API LemonLDAP Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_lemon_pleiade.lemon_myapps_query:
+  path: '/v1/api_lemon_pleiade/lemon_myapps_query'
+  defaults:
+    _controller: '\Drupal\api_lemon_pleiade\Controller\PleiadeAjaxController::lemon_myapps_query'
+    _title: 'LemonLDAP API Myapplications Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+api_lemon_pleiade.lemon_session_query:
+  path: '/v1/api_lemon_pleiade/lemon_session_query'
+  defaults:
+    _controller: '\Drupal\api_lemon_pleiade\Controller\PleiadeAjaxController::lemon_session_query'
+    _title: 'LemonLDAP API Session Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+api_lemon_pleiade.reset_password:
+  path: '/v1/api_lemon_pleiade/reset_password'
+  defaults:
+    _controller: '\Drupal\api_lemon_pleiade\Controller\PleiadeAjaxController::reset_password'
+    _title: 'Reinitialiser le mot de passe'
+  requirements:
+    _permission: 'access content'
+
+system.admin_config_pleiade:
+  path: '/admin/config/pleiade'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Pléiade'
+  requirements:
+    _permission: 'access administration pages'

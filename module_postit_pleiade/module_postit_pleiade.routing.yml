@@ -1,0 +1,18 @@
+module_postit_pleiade.retrieve_postit:
+  path: '/v1/module_postit_pleiade/retrieve_postit'
+  defaults:
+    _controller: '\Drupal\module_postit_pleiade\Controller\PostItController::retrievePostIt'
+    _title: ''
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+
+module_postit_pleiade.save_postit:
+  path: '/v1/module_postit_pleiade/save_postit'
+  defaults:
+    _controller: '\Drupal\module_postit_pleiade\Controller\PostItController::savePostIt'
+    _title: ''
+    _format: json
+  requirements:
+    _access: 'TRUE'

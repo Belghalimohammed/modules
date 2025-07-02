@@ -1,0 +1,11 @@
+.table thead th, .table tfoot th, .table th.align-items-center {
+    font-weight: 500!important;
+}
+span.hide-menu.px-2{
+	display:flex;
+	align-items: center;
+}
+
+.pastille_apps_prod, .noth-span , #pastille_parapheur{
+padding: 0 0 0 1.5em;
+}

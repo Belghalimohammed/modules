@@ -1,0 +1,13 @@
+api_parapheur_pleiade_js:
+  version: 1.x
+  js:
+    js/api_parapheur_pleiade.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+api_parapheur_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/api_parapheur_pleiade.css: {}
+      

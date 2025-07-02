@@ -1,0 +1,16 @@
+api_moodle_pleiade.settings:
+  path: '/admin/config/api_moodle_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_moodle_pleiade\Form\MoodleFields'
+    _title: 'moodle Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_moodle_pleiade.moodle_entities:
+  path: '/v1/api_moodle_pleiade/moodle_entities'
+  defaults:
+    _controller: '\Drupal\api_moodle_pleiade\Controller\MoodleController::moodle_entities'
+    _title: 'moodle Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'

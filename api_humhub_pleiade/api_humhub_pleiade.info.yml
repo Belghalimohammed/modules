@@ -1,0 +1,11 @@
+name: API Pléiade Humhub Infos
+type: module
+description: 'API To get notifications from humhub'
+package: Pleiade
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+# dependencies:
+# Information 
+version: '1.0.x-dev'
+project: 'api_humhub_pleiade'
+datestamp: 1624364473

@@ -1,0 +1,35 @@
+api_nextcloud_pleiade.settings:
+  path: '/admin/config/api_nextcloud_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_nextcloud_pleiade\Form\NextcloudFields'
+    _title: 'Nextcloud Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+    
+api_nextcloud_pleiade.notifs_query:
+  path: '/v1/api_nextcloud_pleiade/notifs_query'
+  defaults:
+    _controller: '\Drupal\api_nextcloud_pleiade\Controller\NextcloudController::notifs_query'
+    _title: 'NC Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+
+api_nextcloud_pleiade.generateToken:
+  path: '/v1/api_nextcloud_pleiade/generateToken'
+  defaults:
+    _controller: '\Drupal\api_nextcloud_pleiade\Controller\NextcloudController::generateToken'
+    _title: 'NC Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'
+
+api_nextcloud_pleiade.pollToken:
+  path: '/v1/api_nextcloud_pleiade/pollToken'
+  defaults:
+    _controller: '\Drupal\api_nextcloud_pleiade\Controller\NextcloudController::pollToken'
+    _title: 'NC Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'

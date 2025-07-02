@@ -1,0 +1,6 @@
+services:
+  module_actu_pleiade.actu_service:
+    class: 'Drupal\module_actu_pleiade\Service\ActuPleiadeService'
+    arguments: []
+
+

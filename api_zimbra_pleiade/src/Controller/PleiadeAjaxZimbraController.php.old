@@ -1,0 +1,78 @@
+<?php
+
+namespace Drupal\api_zimbra_pleiade\Controller;
+
+use Drupal\Core\Controller\ControllerBase;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Drupal\module_api_pleiade\ApiPleiadeManager;
+
+class PleiadeAjaxZimbraController extends ControllerBase {
+
+    public function zimbra_mails_query(Request $request){
+        $return = []; //our variable to fill with data returned by Zimbra
+        // Debug what's in request
+        $zimbradataApi = new ApiPleiadeManager();
+        $return = $zimbradataApi->searchMyMails();
+        if($return){
+            \Drupal::logger('zimbra_mails_query')->info('Return $return: @return', ['@return' => $return ]);
+		$domainPlusToken = $this->config('api_zimbra_pleiade.settings')->get('token_plus_domain');
+$currentUser = \Drupal::currentUser();
+        $userEmail = $currentUser->getEmail();
+
+        // Extract domain from user's email
+        $userDomain = substr(strrchr($userEmail, "@"), 1);
+echo $userDomain;
+// Divisez la valeur en lignes
+$lines = explode("\n", $domainPlusToken);
+
+// Initialisez un tableau pour stocker les domaines
+$domainArray = array();
+
+// Parcourez chaque ligne
+foreach ($lines as $line) {
+    // Supprimez les espaces en début et en fin de ligne
+    $line = trim($line);
+    if (!empty($line)) {
+    // Divisez la ligne en domain et token en utilisant "| |" comme séparateur
+    list($domain, $token) = explode("| |", $line);
+    
+    // Ajoutez le domaine au tableau
+    $domainArray[] = $domain;
+}
+}
+// Check if user's domain is in the domain array
+        $userDomainKey = array_search($userDomain, $domainArray);
+	echo $userDomainKey;
+        // If the user's domain is found, return the corresponding data from $return
+        if ($userDomainKey !== false) {
+            $userDomainData = $return[$userDomainKey];
+            return new JsonResponse(json_encode($userDomainData), 200, [], true);
+        }
+        }
+        else
+        {
+            \Drupal::logger('zimbra_mails_query')->info('aucun retour de l\'api');
+        }
+        
+        return new JsonResponse(json_encode($return), 200, [], true);
+    }
+
+    public function zimbra_tasks_query(Request $request){
+        $return = []; //our variable to fill with data returned by Zimbra
+        // Debug what's in request 
+        $zimbradataApi = new ApiPleiadeManager();
+        $return = $zimbradataApi->searchMyTasks();
+        if($return){
+            \Drupal::logger('zimbra_tasks_query')->info('Return $return: @return', ['@return' => $return ]);
+        }
+        else
+        {
+            \Drupal::logger('zimbra_tasks_query')->info('aucun retour de l\'api');
+        }
+            return new JsonResponse(json_encode($return), 200, [], true);
+    }
+
+
+}

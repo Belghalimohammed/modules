@@ -1,0 +1,12 @@
+name: 'Module API Pleiade'
+type: module
+description: 'Connecteur API pour Pléiade'
+package: Pleiade
+# version: 8.x +
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+
+# Information 
+version: '1.0.x-dev'
+project: 'module_api_pleiade'
+datestamp: 1624364473

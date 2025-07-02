@@ -1,0 +1,46 @@
+<?php
+
+
+/**
+ * @param $variables
+ */
+function api_parapheur_pleiade_preprocess_page(&$variables){
+
+
+  $config = \Drupal::config('api_parapheur_pleiade.settings');
+  
+  $field_parapheur_url = $config->get('field_parapheur_url');
+  $field_parapheur_bureaux_url = $config->get('field_parapheur_bureaux_url');
+  $field_parapheur_auth_method = $config->get('field_parapheur_auth_method');
+  $field_parapheur_auth_url = $config->get('field_parapheur_auth_url');
+  $field_parapheur_username = $config->get('field_parapheur_username');
+  $field_parapheur_password = $config->get('field_parapheur_password');
+
+  //Add the JS library
+  $variables['#attached']['library'][] = 'api_parapheur_pleiade/api_parapheur_pleiade_js';
+  $tempstore = \Drupal::service('tempstore.private')->get('api_lemon_pleiade');
+  $groupData = $tempstore->get('groups');
+  $pattern = '/\bdpt-\d+\b/'; // Modèle pour trouver "dpt-" suivi de chiffres, avec des limites de mots (\b)
+   $departement = '';
+  if (preg_match($pattern, $groupData, $matches)) {
+      $departement = str_replace("dpt-", "", $matches[0]);
+  }
+  if($departement == "85b"){
+    $departement = 85;
+  }
+  elseif($departement == '85'){
+    $departement = '';
+  }
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['departement'] = $departement;
+  //Add the CSS library
+  $variables['#attached']['library'][] = 'api_parapheur_pleiade/api_parapheur_pleiade_css';
+  
+  //Pass variables to Drupal.Settings
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['field_parapheur_url'] = $field_parapheur_url;
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['field_parapheur_bureaux_url'] = $field_parapheur_bureaux_url;
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['field_parapheur_auth_method'] =  $field_parapheur_auth_method;
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['field_parapheur_auth_url'] =  $field_parapheur_auth_url;
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['field_parapheur_username'] =  $field_parapheur_username;
+  $variables['#attached']['drupalSettings']['api_parapheur_pleiade']['field_parapheur_password'] =  $field_parapheur_password;
+
+}

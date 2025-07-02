@@ -1,0 +1,13 @@
+name: Guide Utilisateur Pléiade
+type: module
+description: 'API To get user guide content for Pléiade'
+# package: Pleiade User Infos
+package: Pleiade
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+# dependencies:
+#   - module_api_pleiade
+# Information 
+version: '1.0.x-dev'
+project: 'guide_utilisateur_pleiade'
+datestamp: 1624364473

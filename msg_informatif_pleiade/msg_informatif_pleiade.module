@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @param $variables
+ */
+
+function msg_informatif_pleiade_preprocess_page(&$variables){
+// Add the CSS library
+  $variables['#attached']['library'][] = 'msg_informatif_pleiade/msg_informatif_pleiade_css';
+
+// Add the JS library
+  $variables['#attached']['library'][] = 'msg_informatif_pleiade/msg_informatif_pleiade_js';
+  
+}

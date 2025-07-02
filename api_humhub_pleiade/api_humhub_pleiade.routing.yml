@@ -1,0 +1,16 @@
+api_humhub_pleiade.settings:
+  path: '/admin/config/api_humhub_pleiade/settings'
+  defaults:
+    _form: '\Drupal\api_humhub_pleiade\Form\HumHubapiFieldsConfig'
+    _title: 'API HumHub Pléiade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+
+api_humhub_pleiade.humhub_query:
+  path: '/v1/api_humhub_pleiade/humhub_query'
+  defaults:
+    _controller: '\Drupal\api_humhub_pleiade\Controller\humHubController::humhub_query'
+    _title: 'HmHb Query'
+    _format: json
+  requirements:
+    _access: 'TRUE'

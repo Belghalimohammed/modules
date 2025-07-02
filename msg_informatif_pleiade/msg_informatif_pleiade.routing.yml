@@ -1,0 +1,8 @@
+msg_informatif_pleiade.message_fields:
+  path: '/v1/msg_informatif_pleiade/message_fields'
+  defaults:
+    _controller: '\Drupal\msg_informatif_pleiade\Controller\AlerteModuleController::message_fields'
+    _title: 'Alerte à afficher'
+    _format: json
+  requirements:
+    _access: 'TRUE'

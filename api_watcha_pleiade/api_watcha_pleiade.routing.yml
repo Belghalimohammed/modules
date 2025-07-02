@@ -1,0 +1,109 @@
+api_watcha_pleiade.settings:
+  path: "/admin/config/api_watcha_pleiade/settings"
+  defaults:
+    _form: '\Drupal\api_watcha_pleiade\Form\PleiadeConnectorWatchaConfig'
+    _title: "API Pastell Pléiade Settings"
+  requirements:
+    _permission: "administer site configuration"
+
+
+
+api_watcha_pleiade.watcha_auth:
+  path: "/v1/api_watcha_pleiade/watcha_auth"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::watcha_auth'
+    _title: "watcha API test Query"
+  requirements:
+    _role: 'authenticated'
+    _permission: "access content"
+
+api_watcha_pleiade.watcha_auth_flow:
+  path: "/v1/api_watcha_pleiade/watcha_auth_flow"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::watcha_auth_flow'
+    _title: "watcha API test Query"
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: "access content"
+
+api_watcha_pleiade.watcha_synapse_callback:
+  path: "/v1/api_watcha_pleiade/watcha_synapse_callback"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::watcha_synapse_callback'
+    _title: "watcha API test Query"
+  requirements:
+    _role: "authenticated"
+    _permission: "access content"
+
+api_watcha_pleiade.getConfig:
+  path: "/v1/api_watcha_pleiade/getConfig"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::getConfig'
+    _title: "watcha API Notifications Query"
+    _format: json
+  requirements:
+    _role: "authenticated"
+    _access: "TRUE"
+
+api_watcha_pleiade.getNotifications:
+  path: "/v1/api_watcha_pleiade/getNotifications"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::getNotifications'
+    _title: "watcha API Notifications Query"
+    _format: json
+  requirements:
+    _role: "authenticated"
+    _access: "TRUE"
+
+
+api_watcha_pleiade.test1:
+  path: "/v1/api_watcha_pleiade/test1"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::test1'
+    _title: "watcha API test Query"
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: "administer users"
+
+api_watcha_pleiade.test2:
+  path: "/v1/api_watcha_pleiade/test2"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::test2'
+    _title: "watcha API test Query"
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: "administer users"
+
+api_watcha_pleiade.getNotificationsDb:
+  path: '/v1/api_watcha_pleiade/notifications'
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::getNotificationsDb'
+    _title: 'Get Matrix Notifications'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+api_watcha_pleiade.notifications_add:
+  path: '/v1/api_watcha_pleiade/notifications/add'
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::addNotificationDb'
+    _title: 'Add Matrix Notification'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+
+
+
+api_watcha_pleiade.watcha_test:
+  path: "/v1/api_watcha_pleiade/watcha_test"
+  defaults:
+    _controller: '\Drupal\api_watcha_pleiade\Controller\PleiadeAjaxWatchaController::watcha_test'
+    _title: "watcha API test Query"
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: "administer users"
+

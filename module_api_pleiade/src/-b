@@ -1,0 +1,34 @@
+HTTP/1.1 504 Gateway Timeout
+Content-Type: text/html
+Cache-Control: no-cache
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Security-Policy: frame-ancestors 'self'
+Content-Length: 30413
+
+HTTP/1.1 200 Connection established
+Proxy-Agent: Fortinet-Proxy/1.0
+
+HTTP/1.1 200 OK
+Date: Mon, 16 Dec 2024 14:12:25 GMT
+Server: Apache/2.4.62 (Debian)
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: *
+Access-Control-Allow-Methods: POST,GET
+Access-Control-Expose-Headers: *
+Access-Control-Max-Age: 86400
+X-Frame-Options: ALLOW-FROM https://discuter-test.sitiv.fr https://discuter.sitiv.fr;
+Content-Security-Policy: default-src 'self';img-src 'self' data:;style-src 'self';font-src 'self';connect-src 'self';script-src 'self';form-action * https://portail.sitiv.fr;frame-ancestors https://discuter-test.sitiv.fr https://discuter.sitiv.fr;
+Set-Cookie: lemonldappdata=%7B%22keepPdata%22%3A%5B%22issuerRequestoauth2%22%2C%22issuerRequestoauth2Path%22%5D%2C%22issuerRequestoauth2%22%3A%221734286945_30712%22%2C%22issuerRequestoauth2Path%22%3A%5B%22authorize%22%5D%2C%22issuerTs%22%3A1734358345%2C%22_url%22%3A%22aHR0cHM6Ly9wb3J0YWlsLnNpdGl2LmZyL29hdXRoMg%3D%3D%22%7D; path=/; HttpOnly=1; SameSite=None; secure
+Vary: Accept-Encoding,User-Agent
+Transfer-Encoding: chunked
+Content-Type: text/html
+Strict-Transport-Security: max-age=31536000; includeSubdomains
+

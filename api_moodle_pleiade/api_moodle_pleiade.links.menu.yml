@@ -1,0 +1,6 @@
+api_moodle_pleiade.admin:
+  title: 'API Pléiade - Moodle module settings'
+  description: 'Page de configuration du odule Moodle Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_moodle_pleiade.settings
+  weight: 12

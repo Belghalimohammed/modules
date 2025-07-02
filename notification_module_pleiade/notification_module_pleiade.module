@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @param $variables
+ */
+
+function notification_module_pleiade_preprocess_page(&$variables){
+// Add the CSS library
+  $variables['#attached']['library'][] = 'notification_module_pleiade/notification_module_pleiade_css';
+
+// Add the JS library
+  $variables['#attached']['library'][] = 'notification_module_pleiade/notification_module_pleiade_js';
+  
+// Config form values
+  //$config = \Drupal::config('notification_module_pleiade.settings');
+  //$variables['#attached']['drupalSettings']['notification_module_pleiade']['notification_actif'] = $config->get('notification_actif');;
+  //$variables['#attached']['drupalSettings']['notification_module_pleiade']['notification_a_afficher'] = $config->get('notification_a_afficher');;
+  //$variables['#attached']['drupalSettings']['notification_module_pleiade']['gravite_du_notification'] = $config->get('gravite_du_notification');
+}

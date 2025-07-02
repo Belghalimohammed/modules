@@ -1,0 +1,4 @@
+name: Module d'accessibilité
+description: Ajoute éléments d'accessibilité pour Pléiade, Sites internets, GRU
+core_version_requirement: ^10
+type: module

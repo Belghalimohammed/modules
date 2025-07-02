@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * @param $variables
+ */
+
+function module_api_pleiade_preprocess_page(&$variables){
+
+}

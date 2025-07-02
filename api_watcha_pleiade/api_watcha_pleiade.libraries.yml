@@ -1,0 +1,15 @@
+api_watcha_pleiade_js:
+  version: 1.x
+  js:
+    js/lib/js/matrix-bundle.js: {}   
+    js/lib/slick.js: {} 
+    js/script.js: {}    
+ 
+  dependencies:
+    - core/drupal
+    - core/once
+api_watcha_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/api_watcha_pleiade.css: {}

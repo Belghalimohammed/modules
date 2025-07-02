@@ -1,0 +1,12 @@
+name: 'Module Notification Pleiade'
+type: module
+description: 'Notification  pour Pléiade'
+package: Pleiade
+# version: 8.x +
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+
+# Information 
+version: '1.0.x-dev'
+project: 'notification_module_pleiade'
+datestamp: 1624364473

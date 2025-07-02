@@ -1,0 +1,25 @@
+.square{
+        height: 120px;
+        width: 120px;
+        max-height: 150px;
+        max-width: 150px;
+        background-color: white;
+        transition: transform .2s;
+        border: 1px solid #d2d2d3;
+        color: unset;
+        border-radius: 10px;
+}
+.square:hover{
+        transform: scale(0.9);
+}
+.square span{ 
+        color: #54667a;
+}
+.pastille_collab .pastille, #echangersurlerseausocial .pastille, .fa-users .badge{
+        background-color: #fbbd52!important;
+}
+#main-wrapper.mini-sidebar #menuLemon .badge{display: none;} 
+
+#humhub_block hr{
+        margin: 0.3rem 0!important;
+}
