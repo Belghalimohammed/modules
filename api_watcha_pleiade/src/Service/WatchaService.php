@@ -123,6 +123,139 @@ class WatchaService
     $accessToken = $this->user->get('field_watchaaccesstoken')->value;
     $grouped = [];
 
+
+    $url = "{$this->synapseApi}/sync?filter=%7B%22room%22%3A%7B%22timeline%22%3A%7B%22unread_thread_notifications%22%3Atrue%2C%22limit%22%3A20%7D%2C%22state%22%3A%7B%22lazy_load_members%22%3Atrue%7D%7D%7D&full_state=false";
+    $data = $this->matrixGet($url, $accessToken);
+
+    // ✅ Handle joined rooms
+    foreach ($data['rooms']['join'] ?? [] as $roomId => $roomData) {
+      $notifCount = $roomData['unread_notifications']['notification_count'] ?? 0;
+      if ($notifCount == 0) continue;
+
+      $roomName = $roomId;
+      $roomMembers = [];
+
+      // Get room name and members
+      foreach ($roomData['state']['events'] ?? [] as $stateEvent) {
+        if ($stateEvent['type'] === 'm.room.member') {
+          $uid = $stateEvent['state_key'] ?? null;
+          if ($uid) {
+            $roomMembers[$uid] = $stateEvent['content'];
+          }
+        }
+        if ($stateEvent['type'] === 'm.room.name') {
+          $roomName = $stateEvent['content']['name'] ?? $roomName;
+        }
+      }
+
+      $editsMap = [];
+      $lastMessage = null;
+
+      // Traverse timeline in reverse to find the latest valid message
+      $events = array_reverse($roomData['timeline']['events'] ?? []);
+      foreach ($events as $event) {
+        $type = $event['type'] ?? '';
+        $sender = $event['sender'] ?? '';
+        $content = $event['content'] ?? [];
+        $rel = $content['m.relates_to']['rel_type'] ?? null;
+        $isRedacted = isset($event['unsigned']['redacted_by']);
+
+        // Store edit content
+        if ($rel === 'm.replace') {
+          $targetId = $content['m.relates_to']['event_id'] ?? null;
+          if ($targetId) {
+            $editsMap[$targetId] = $content;
+          }
+          continue;
+        }
+
+        if ($type !== 'm.room.message') continue;
+        if ($rel === 'm.thread') continue;
+        if ($sender === $userId) continue;
+        if ($isRedacted) continue;
+
+        $lastMessage = $event;
+        break;
+      }
+
+      if ($lastMessage) {
+        $senderId = $lastMessage['sender'];
+        $body = $lastMessage['content']['body'] ?? '';
+
+        // Apply edit if any
+        if (isset($editsMap[$lastMessage['event_id']])) {
+          $editedContent = $editsMap[$lastMessage['event_id']];
+          $body = $editedContent['m.new_content']['body'] ?? $body;
+        }
+
+        $senderData = $roomMembers[$senderId] ?? null;
+        $displayName = $senderData['displayname'] ?? $senderId;
+        $avatarUrl = $this->getMxcUrl($senderData['avatar_url'] ?? '');
+
+        $grouped[$roomId] = [
+          'type' => "unread",
+          'room_id' => $roomId,
+          'room_name' => $roomName === $roomId ? "direct" : $roomName,
+          'unread' => $notifCount,
+          'message' => $body,
+          'sender' => $displayName,
+          'avatar_url' => $avatarUrl,
+          'sender_id' => $senderId,
+          'timestamp' => $lastMessage['origin_server_ts'],
+          'event_id' => $lastMessage['event_id'],
+        ];
+      }
+    }
+
+    // 📨 Handle invited rooms
+    foreach ($data['rooms']['invite'] ?? [] as $roomId => $inviteData) {
+      $roomName = "Invite";
+      $inviter = null;
+      $timestamp = null;
+
+      foreach ($inviteData['invite_state']['events'] ?? [] as $event) {
+        if ($event['type'] === 'm.room.name') {
+          $roomName = $event['content']['name'] ?? $roomName;
+        }
+        if ($event['type'] === 'm.room.member' && !empty($event['sender'])) {
+          $inviter = $event['sender'];
+          $timestamp = $event['origin_server_ts'] ?? null;
+        }
+      }
+
+      $displayName = $inviter;
+      $avatarUrl = null;
+
+      // Try to extract inviter info directly from invite events
+      foreach ($inviteData['invite_state']['events'] ?? [] as $event) {
+        if ($event['type'] === 'm.room.member' && ($event['state_key'] ?? '') === $inviter) {
+          $displayName = $event['content']['displayname'] ?? $inviter;
+          $avatarUrl = $this->getMxcUrl($event['content']['avatar_url'] ?? '');
+          break;
+        }
+      }
+
+      $grouped[$roomId] = [
+        'type' => "invite",
+        'room_id' => $roomId,
+        'room_name' => $roomName,
+        'sender' => $displayName,
+        'avatar_url' => $avatarUrl,
+        'sender_id' => $inviter,
+        'timestamp' => $timestamp,
+        'unread' => 1,
+
+      ];
+    }
+
+    return $grouped;
+  }
+
+  public function getNotifications2($userId): array
+  {
+    $accessToken = $this->user->get('field_watchaaccesstoken')->value;
+    $grouped = [];
+
     // 🔧 Matrix sync filters
     $filter = [
       'room' => [
@@ -285,7 +418,6 @@ class WatchaService
 
     return $grouped;
   }
-
   private function matrixGet(string $url, string $accessToken): array
   {
     $ch = curl_init($url);
@@ -319,9 +451,12 @@ class WatchaService
     // Get only invites from /sync
     $filterEncoded = urlencode(json_encode([
       'room' => [
-        'timeline' => ['limit' => 50, 'types' => ['m.room.message', 'm.sticker']],
-        'state' => ['lazy_load_members' => true],
+        'timeline' => [
+          'limit' => 50,
+          'types' => ['m.room.message', 'm.sticker'],
+        ],
         'ephemeral' => ['types' => ['m.receipt']],
+        'state' => ['lazy_load_members' => true],
         'include_leave' => false,
       ],
       'presence' => ['types' => []],

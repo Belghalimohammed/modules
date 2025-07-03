@@ -1,9 +1,11 @@
 api_watcha_pleiade_js:
   version: 1.x
   js:
-    js/lib/js/matrix-bundle.js: {}   
+   
     js/lib/slick.js: {} 
-    js/script.js: {}    
+    js/script.js: {} 
+    js/utils.js: {} 
+    js/watcha-notifications.js: {}    
  
   dependencies:
     - core/drupal

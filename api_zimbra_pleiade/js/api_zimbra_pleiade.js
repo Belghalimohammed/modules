@@ -22,16 +22,10 @@
               for (let mail of donnees.userData.Body.SearchResponse.c) {
                 const eArray = mail.e;
                 const messageId = mail.m[0].id;
-                const timestamp = mail.d / 1000;
-                const date = new Date(timestamp * 1000);
-
                 const sender = eArray[eArray.length - 1].p || eArray[eArray.length - 1].a;
                 const subject = mail.su || "(Sans sujet)";
                 const message = mail.fr || "";
-                const time =
-                  String(date.getHours()).padStart(2, "0") +
-                  ":" +
-                  String(date.getMinutes()).padStart(2, "0");
+                const time =formatTimestamp(mail.d);
              
                 mailListHTML += `
                   <a href="${donnees.domainEntry}modern/email/Inbox/message/${messageId}"
@@ -68,3 +62,13 @@
     },
   };
 })(Drupal, once, drupalSettings);
+
+function formatTimestamp(timestamp) {
+  return new Date(timestamp).toLocaleTimeString([], {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}

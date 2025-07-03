@@ -55,7 +55,7 @@ class ActuPleiadeService
         foreach ($feed->get_items() as $item) {
             if ($count++ >= $max) break;
 
-            $created = $item->get_date('d-m-Y H:i:s');
+            $created = $item->get_date('d-m-Y H:i');
             $title = $item->get_title();
             $link = $item->get_permalink();
             $tags = [];
