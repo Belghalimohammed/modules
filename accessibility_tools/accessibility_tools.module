@@ -44,7 +44,7 @@ function accessibility_tools_page_attachments(array &$attachments)
 
     $account = \Drupal\user\Entity\User::load($current_user->id());
 
-    $is_watcha = $account->get("field_iswatchaactivated")->value ?? '';
+    $is_watcha = ($account->get("field_iswatchaactivated")->value && !empty($account->get('field_watchaaccesstoken')->value)) ? 1 : '0';
     $is_glpi = $account->get("field_isglpiactivated")->value ?? '';
     $is_nextcloud =  ($account->get("field_isnextcloudactivated")->value && !empty($account->get('field_nextcloud_api_key')->value)) ? 1 : '0';
       // \Drupal::logger('api_glpi_pleiade')->alert("between " .($account->get("field_isnextcloudactivated")->value && !empty($account->get('field_nextcloud_api_key')->value)));
@@ -58,13 +58,12 @@ function accessibility_tools_page_attachments(array &$attachments)
       
     
       localStorage.setItem("isNextCloudActivated", "$is_nextcloud");
+      localStorage.setItem("isWatchaActivated", "$is_watcha");
     
      if (!localStorage.getItem("isGlpiActivated")) {
       localStorage.setItem("isGlpiActivated", "$is_glpi");
     }
-     if (!localStorage.getItem("isWatchaActivated")) {
-      localStorage.setItem("isWatchaActivated", "$is_watcha");
-     }
+     
      if (!localStorage.getItem("menuOpen_")) {
       localStorage.setItem("menuOpen_", "$is_menu");
     }

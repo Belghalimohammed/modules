@@ -7,8 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Drupal\api_watcha_pleiade\Service\WatchaService;
-use Drupal\Core\Database\Database;
+use Drupal\api_watcha_pleiade\Service\WatchaServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -18,72 +17,21 @@ class PleiadeAjaxWatchaController extends ControllerBase
 {
 
   protected $watchaService;
-    protected $currentUser;
-  public function __construct(WatchaService $watchaService,AccountProxyInterface $current_user)
+  protected $currentUser;
+  public function __construct(WatchaServiceInterface $watchaService, AccountProxyInterface $current_user)
   {
     $this->watchaService = $watchaService;
-      $this->currentUser = $current_user;
+    $this->currentUser = $current_user;
   }
 
   public static function create(ContainerInterface $container)
   {
     return new static(
-      $container->get('api_watcha_pleiade.watcha_service'),   $container->get('current_user')
+      $container->get(WatchaServiceInterface::class),
+      $container->get('current_user')
     );
   }
 
-
-   /**
-   * GET: Return all notifications for current user.
-   */
-  public function getNotificationsDb(): JsonResponse {
-    $uid = $this->currentUser->id();
-    $connection = Database::getConnection();
-
-    $result = $connection->select('matrix_notifications', 'm')
-      ->fields('m')
-      ->condition('uid', $uid)
-      ->execute()
-      ->fetchAllAssoc('room_id');
-
-    return new JsonResponse($result);
-  }
-
-  /**
-   * POST: Add or update a matrix notification.
-   */
-  public function addNotificationDb(Request $request): JsonResponse {
-    $uid = $this->currentUser->id();
-    $data = json_decode($request->getContent(), true);
-
-    if (!isset($data['room_id'])) {
-      return new JsonResponse(['error' => 'room_id is required.'], Response::HTTP_BAD_REQUEST);
-    }
-
-    // Safe defaults
-    $fields = [
-      'type' => $data['type'] ?? 'unread',
-      'room_name' => $data['room_name'] ?? '',
-      'unread' => $data['unread'] ?? 0,
-      'sender' => $data['sender'] ?? '',
-      'sender_id' => $data['sender_id'] ?? '',
-      'avatar_url' => $data['avatar_url'] ?? '',
-      'timestamp' => $data['timestamp'] ?? time() * 1000,
-      'message' => $data['message'] ?? '',
-      'room_id' => $data['room_id'],
-      'uid' => $uid,
-    ];
-
-    Database::getConnection()
-      ->merge('matrix_notifications')
-      ->key(['uid' => $uid, 'room_id' => $fields['room_id']])
-      ->fields($fields)
-      ->execute();
-
-    return new JsonResponse(['status' => 'success', 'saved' => $fields]);
-  }
-
-  
   public function watcha_auth_flow(Request $request)
   {
     $link = $this->watchaService->getAuthorizationLink();
@@ -131,33 +79,6 @@ class PleiadeAjaxWatchaController extends ControllerBase
     }
   }
 
-  public function getNotifications(Request $request)
-  {
-
-    try {
-     
-        $notifications = $this->watchaService->getNotifications($request->get("user"));
-      
-
-      return new JsonResponse(['data'=>$notifications], 200);
-    } catch (\Exception $e) {
-      return new JsonResponse(['errorobj' => $e], 401);
-    }
-  }
-
-  public function test1(Request $request)
-  {
-    $notifications = $this->watchaService->test1();
-
-    return new JsonResponse($notifications, 200);
-  }
-
-  public function test2(Request $request)
-  {
-    $notifications = $this->watchaService->test2();
-
-    return new JsonResponse($notifications, 200);
-  }
   public function watcha_test(Request $request)
   {
     $this->user = User::load(\Drupal::currentUser()->id());

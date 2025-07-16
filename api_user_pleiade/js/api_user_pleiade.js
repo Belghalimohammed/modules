@@ -4,6 +4,27 @@
     attach: function (context, settings) {
       setTimeout(function () {
         once("APIUserInfoBehavior", "body", context).forEach(function () {
+
+        
+     
+      const buttons = context.querySelectorAll('.clear-api-token-button:not([data-clear-attached])');
+
+      buttons.forEach(function (button) {
+        button.setAttribute('data-clear-attached', 'true');
+
+        button.addEventListener('click', function (e) {
+          e.preventDefault();
+          // Look for the input next to the button (in the same flex container)
+          const container = button.parentElement;
+          const input = container.querySelector('input');
+
+          if (input) {
+            input.value = '';
+          }
+        });
+      });
+ 
+   
           var xhr = new XMLHttpRequest();
           xhr.open("GET", Drupal.url("v1/api_user_pleiade/user_infos"));
           xhr.responseType = "json";
@@ -34,13 +55,13 @@
                   }
 
                   // Ajoutez le contenu de 'a_ajouter' à la fin de la div
-                  mes_apps.insertAdjacentHTML("beforeend", a_ajouter);
+                  mes_apps?.insertAdjacentHTML("beforeend", a_ajouter);
 
                   const deleteModal = document.getElementById("deleteAppModal");
                   const urlInputFav =
-                    deleteModal.querySelector("#uriInputFavoris");
+                    deleteModal?.querySelector("#uriInputFavoris");
                   const titleInputFav =
-                    deleteModal.querySelector("#titleInputFavoris");
+                    deleteModal?.querySelector("#titleInputFavoris");
                   document.querySelectorAll(".favoris-link").forEach((el) => {
                     el.addEventListener("contextmenu", (event) => {
                       event.preventDefault();

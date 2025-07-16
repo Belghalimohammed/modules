@@ -1,0 +1,8 @@
+services:
+  api_zimbra_pleiade.zimbra_service:
+    class: 'Drupal\api_zimbra_pleiade\Service\ZimbraService'
+    
+
+  Drupal\api_zimbra_pleiade\Service\ZimbraServiceInterface:
+    alias: 'api_zimbra_pleiade.zimbra_service'
+

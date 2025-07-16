@@ -1,6 +1,7 @@
 <?php
 
 
+
 /**
  * quick check modules orders of execution (default all zero)
  * As e must be sure this one fires after our main lemon modules
@@ -56,4 +57,49 @@ function api_user_pleiade_preprocess_page(&$variables)
   }
 }
 
+
+use Drupal\Core\Form\FormStateInterface;
+
+
+function api_user_pleiade_form_user_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $fields = [
+    'field_nextcloud_api_key',
+    'field_nextcloud_api_user',
+    'field_annuaireaccesstoken',
+    'field_watchaaccesstoken',
+  ];
+
+  foreach ($fields as $field_name) {
+    // Ensure the field and its widget structure exist before altering.
+    if (isset($form[$field_name]['widget'][0]['value'])) {
+
+      // To place the input and button on the same line, we will make their
+      // common parent a flex container. The parent is $form[$field_name]['widget'][0].
+      // We change its type to 'container' and add flexbox styles.
+      $form[$field_name]['widget'][0]['#type'] = 'container';
+      $form[$field_name]['widget'][0]['#attributes']['style'] = 'display: flex; align-items: center;';
+      
+      // --- INPUT FIELD STYLES (Unchanged from your original code) ---
+      // Apply original styles to the text input.
+      $form[$field_name]['widget'][0]['value']['#attributes']['style'] = 'background-color: #e9ecef; pointer-events: none; cursor: not-allowed;';
+      $form[$field_name]['widget'][0]['value']['#attributes']['autocomplete'] = 'off';
+
+      // --- BUTTON ELEMENT (Now a sibling of 'value' inside the new container) ---
+      // The button is now a direct child of the container, alongside 'value'.
+      $form[$field_name]['widget'][0]['clear_button'] = [
+        '#type' => 'button',
+        '#value' => '🗑️', // Using a trash can emoji for the button face.
+        '#attributes' => [
+          'class' => ['clear-api-token-button'],
+          'type' => 'button', // Important for preventing form submission.
+          // Styles for a smaller button with some space.
+          'style' => 'margin-left: 8px;margin-top:40px; padding: 0.4rem; line-height: 1.5; font-size: 1rem;',
+        ],
+        '#attached' => [
+          'library' => ['api_user_pleiade/clear_token_field'],
+        ],
+      ];
+    }
+  }
+}
 

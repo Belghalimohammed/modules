@@ -1,7 +1,8 @@
 services:
   api_watcha_pleiade.watcha_service:
     class: 'Drupal\api_watcha_pleiade\Service\WatchaService'
-    arguments:
-      - '@database'
+   
 
+  Drupal\api_watcha_pleiade\Service\WatchaServiceInterface:
+    alias: 'api_watcha_pleiade.watcha_service'
 

@@ -33,11 +33,11 @@
 
     if (tickets.length === 0) {
       container.innerHTML = `
-        <div class="card shadow-sm">
-          <div class="card-header bg-white">
+        <div class="card shadow-sm close">
+          <div class="card-header bg-white close-icon">
             <h4 class="text-dark py-2">Derniers tickets GLPI</h4>
           </div>
-          <div class="card-body">
+          <div class="card-body close-div">
             <h5>Aucun ticket GLPI en cours</h5>
           </div>
         </div>`;
@@ -45,8 +45,8 @@
     }
 
     let tableRows = "";
-
-    tickets.slice(0, isFront ? 10 : tickets.length).forEach(([_, ticket]) => {
+    let c=0;
+    tickets.forEach(([_, ticket]) => {
       const title = ticket.name || "Titre manquant";
       const openDate = formatDate(ticket.date || "");
       const modifDate = formatDate(ticket.date_mod || "");
@@ -55,6 +55,9 @@
       const priorityText = getPriorityText(ticket.priority);
       const actors = getUserRoles(ticket.newData, userMail);
       if(actors == "Rôle manquant") return;
+
+      
+      c++;
       const ticketUrl = `${glpiUrl}/index.php?redirect=ticket_${ticket.id}`;
 
       if ([statusText, urgencyText, priorityText].includes("Valeur invalide")) return;
@@ -71,13 +74,13 @@
           <td><a href="${ticketUrl}" target="_blank"><i class="fa-solid fa-magnifying-glass"></i></a></td>
         </tr>`;
     });
-
+ console.log("count:::",c)
     container.innerHTML = `
-      <div class="card" style="margin:0px;height:100%">
-        <div class="card-header bg-white">
-          <h4 class="text-dark py-2">${isFront ? "Derniers tickets GLPI" : "Mes derniers tickets GLPI"}</h4>
+      <div class="card close" style="margin:0px;height:100%">
+        <div class="card-header bg-white ">
+          <h4 class="text-dark py-2 close-icon">${isFront ? "Derniers tickets GLPI" : "Mes derniers tickets GLPI"}</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body close-div">
           <table class="table table-striped" id="glpi_table">
             <thead>
               <tr>

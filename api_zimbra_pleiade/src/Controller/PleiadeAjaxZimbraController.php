@@ -2,22 +2,23 @@
 
 namespace Drupal\api_zimbra_pleiade\Controller;
 
+use Drupal\api_zimbra_pleiade\Service\ZimbraServiceInterface;
 use Drupal\Core\Controller\ControllerBase;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Drupal\module_api_pleiade\ApiPleiadeManager;
-use Drupal\user\Entity\User;
-
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PleiadeAjaxZimbraController extends ControllerBase
 {
   private $token;
   private $url;
   private $email;
-  public function __construct()
+
+  private $service;
+  public function __construct(ZimbraServiceInterface $service)
   {
+    $this->service = $service;
     $user = \Drupal\user\Entity\User::load(
       \Drupal::currentUser()->id()
     );
@@ -26,17 +27,33 @@ class PleiadeAjaxZimbraController extends ControllerBase
     $array = \Drupal::keyValue("collectivities_store")->get('global', "does not exist");
     $this->token = $array[$collectivite]['token_zimbra'];
     $this->url = $array[$collectivite]['url_zimbra'];
+   
+  }
+
+  public static function create(ContainerInterface $container)
+  {
+    return new static(
+      $container->get(ZimbraServiceInterface::class),
+      $container->get('current_user')
+    );
   }
   public function zimbra_mails_query(Request $request)
   {
 
     if ($this->url != "") {
       $limit_mail = 500;
-      $mail_endpoint = '<SearchRequest xmlns="urn:zimbraMail"  limit="' . $limit_mail . '"><query>is:unread inid:2</query></SearchRequest>';
+      $query = sprintf('is:unread inid:2 -from:%s', $this->email);
+
+// Now, build the full XML endpoint using the new query
+$mail_endpoint = sprintf(
+    '<SearchRequest xmlns="urn:zimbraMail" limit="%d"><query>%s</query></SearchRequest>',
+    $limit_mail,
+    htmlspecialchars($query, ENT_XML1, 'UTF-8') // Use htmlspecialchars for security
+);
 
       $return = []; // Variable to store Zimbra data
-      $zimbradataApi = new ApiPleiadeManager();
-      $return = $zimbradataApi->searchMyMails($mail_endpoint, $this->email, $this->token, $this->url);
+     
+      $return = $this->service->searchMyMails($mail_endpoint, $this->email, $this->token, $this->url);
       if ($return) {
 
         $userDomainData = $return[0] ?? null;
@@ -85,8 +102,8 @@ class PleiadeAjaxZimbraController extends ControllerBase
     if (in_array($settings_zimbra->get("lemon_group"), $groupDataArray)) {
      
          $return = []; // Variable to store Zimbra data
-          $zimbradataApi = new ApiPleiadeManager();
-          $return = $zimbradataApi->searchMyTasks($tasks_endpoint, $this->email, $this->token, $this->url);
+         
+          $return = $this->service->searchMyTasks($tasks_endpoint, $this->email, $this->token, $this->url);
 
           if ($return) {
             $userDomainData = $return[0] ?? null;

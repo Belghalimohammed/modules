@@ -92,15 +92,34 @@ class ModuleGeneralPleiadeConfigForm extends ConfigFormBase {
         '#default_value' => $config->get('row__' . $i . '.site'),
         '#wrapper_attributes' => ['class' => ['inline-field']],
       ];
+
+      
       $form['row__' . $i]['logo'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Logo de collectivité'),
         '#default_value' => $config->get('row__' . $i . '.logo'),
+        '#description' => $this->t('Enter a URL or upload a file below. If you upload a file, this will be filled automatically.'),
+        '#attributes' => ['id' => 'edit-row-' . $i . '-logo'],
         '#wrapper_attributes' => ['class' => ['inline-field']],
       ];
-    }
+      
+      $form['row__' . $i]['logo_upload'] = [
+        '#type' => 'managed_file',
+        '#title' => $this->t('Upload Logo'),
+        '#upload_location' => 'public://logos/',
+        '#default_value' => NULL,
+        '#upload_validators' => [
+          'file_validate_extensions' => ['png jpg jpeg svg'],
+        ],
+        '#attributes' => ['class' => ['logo-upload']],
+        '#ajax' => [
+          'callback' => '::logoUploadCallback',
+          'event' => 'change',
+          'wrapper' => 'edit-row-' . $i . '-logo',
+        ],
+      ];
 
-  
+    }
     return parent::buildForm($form, $form_state);
   }
 
@@ -124,26 +143,34 @@ class ModuleGeneralPleiadeConfigForm extends ConfigFormBase {
     $row1 = $form_state->getValue('row_' . $i) ?? [];
     $row2 = $form_state->getValue('row__' . $i) ?? [];
     $nom = $row1['nom'] ?? '';
-
+  
     if (empty($nom)) continue; // Skip empty names
-
-    // Update existing or create new
+  
+    // Handle logo (URL or uploaded file)
+    $logo_value = $row2['logo'] ?? '';
+    $upload_fid = $form_state->getValue(['row__' . $i, 'logo_upload'])[0] ?? NULL;
+  
+    if ($upload_fid && $file = \Drupal\file\Entity\File::load($upload_fid)) {
+      $file->setPermanent();
+      $file->save();
+      $logo_value = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+    }
+  
     $existing_data[$nom] = array_merge($existing_data[$nom] ?? [], [
       'nom' => $nom,
       'site' => $row2['site'] ?? '',
-      'logo' => $row2['logo'] ?? '',
+      'logo' => $logo_value,
       'horaires' => $row1['Horaires'] ?? '',
       'numero' => $row1['numero'] ?? '',
       'mail' => $row1['mail'] ?? '',
     ]);
-
-    // Optional: also save to config for debug or duplication
+  
     $config->set("row_{$i}.nom", $nom);
     $config->set("row_{$i}.Horaires", $row1['Horaires'] ?? '');
     $config->set("row_{$i}.numero", $row1['numero'] ?? '');
     $config->set("row_{$i}.mail", $row1['mail'] ?? '');
     $config->set("row__{$i}.site", $row2['site'] ?? '');
-    $config->set("row__{$i}.logo", $row2['logo'] ?? '');
+    $config->set("row__{$i}.logo", $logo_value);
   }
 
   $config->save();

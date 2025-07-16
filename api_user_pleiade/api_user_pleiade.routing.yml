@@ -63,3 +63,28 @@ api_user_pleiade.setVariables:
 
 
 
+
+api_user_pleiade.setVariablesValue:
+  path: '/v1/api_user_pleiade/setVariablesValue'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::setVariablesValue'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: 'access content' 
+
+api_user_pleiade.getVariablesValue:
+  path: '/v1/api_user_pleiade/getVariablesValue'
+  defaults:
+    _controller: '\Drupal\api_user_pleiade\Controller\PleiadeUserController::getVariablesValue'
+    _title: 'User Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _permission: 'access content' 
+
+
+
+
+

@@ -46,12 +46,15 @@
               });
 
               $row.find("#slick-down").on("click", function () {
+                console.log("down");
                 $carousel.slick("slickNext");
               });
             } else {
               console.warn("Le carrousel Slick n'est pas chargé.");
             }
           });
+
+          
         });
       }, 2000);
     },

@@ -3,20 +3,31 @@
 namespace Drupal\datatable_pleiade\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+
+use Drupal\datatable_pleiade\Service\NextCloudService;
+use Drupal\datatable_pleiade\Service\ParapheurService;
+use Drupal\datatable_pleiade\Service\PastellService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\module_api_pleiade\ApiPleiadeManager;
 
 
 class DatatableController extends ControllerBase
 {
-
+    private $parapheurService;
+    private $nextcloudService;
+    private $pastelService;
+     public function __construct()
+    {
+       $this->parapheurService = new ParapheurService();
+       $this->nextcloudService = new NextCloudService();
+       $this->pastelService = new PastellService();
+    }
     public function documents_recents(Request $request)
     {
 
-         $dataApi = new ApiPleiadeManager();
+     //    $dataApi = new ApiPleiadeManager();
         $formattedData['docs'] = [];
         $tempstoreGroup = \Drupal::service('tempstore.private')->get('api_lemon_pleiade');
         $storedGroups = $tempstoreGroup->get('groups');
@@ -33,8 +44,8 @@ class DatatableController extends ControllerBase
                 \Drupal::logger('api_pastell_documents')->info('function search Pastell Docs with id_e : ' . $id_e);
                
                 
-                $return1 = $dataApi->searchMyDocs($id_e);
-                $return2 = $dataApi->searchMyFlux();
+                $return1 = $this->pastelService->searchMyDocs($id_e);
+                $return2 = $this->pastelService->searchMyFlux();
                 // var_dump(gettype($return1));
                 if ($return1) {
                     foreach ($return1 as &$document) {
@@ -58,7 +69,7 @@ class DatatableController extends ControllerBase
 
             $config = \Drupal::config('api_parapheur_pleiade.settings');
             $field_parapheur_url = $config->get('field_parapheur_url');
-            $return1 = $dataApi->searchMyDesktop();
+            $return1 = $this->parapheurService->searchMyDesktop();
             if ($return1) {
 
                 $return1 = array_map(function ($item) use ($field_parapheur_url) {
@@ -83,7 +94,7 @@ class DatatableController extends ControllerBase
         $formattedData['docs'] = array_merge($formattedData['docs'], $return1);
 
 
-        $return_nc = $dataApi->getNextcloudNotifs();
+        $return_nc = $this->nextcloudService->getNextcloudNotifs();
         $tempstore = \Drupal::service('tempstore.private')->get('api_nextcloud_pleiade');
         $tempstore->set('documents_nextcloud', $return_nc);
         if ($return_nc) {

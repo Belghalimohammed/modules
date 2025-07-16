@@ -2,12 +2,22 @@ accessibility_tools:
   version: 1.0
   js:
     js/accessibility_tools.js: {}
+    
   dependencies:
     - core/jquery
     - core/drupal
     - drupal:block
+    - core/once 
 accessibility_tools_css:
   version: 1.x
   css:
     theme:
       css/accessibility_tools.css: {}
+
+
+slick:
+  version: 1.0
+  js:
+    js/lib/slick.js: {}
+    
+  

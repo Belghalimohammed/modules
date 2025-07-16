@@ -6,19 +6,7 @@
       if (drupalSettings.module_general_pleiade) {
        
           once("ParamsGenBehavior", "body", context).forEach(function () {
-            // Get cookie by name
-            function getCookie(name) {
-              const cookies = document.cookie.split(";");
-              for (let cookie of cookies) {
-                const [cookieName, cookieValue] = cookie.split("=");
-                if (cookieName.trim() === name) {
-                  return cookieValue;
-                }
-              }
-              return null;
-            }
-
-            // Apply custom color theme
+           
             if (settings.module_general_pleiade.color_theme) {
               const newColorCode = settings.module_general_pleiade.color_theme;
               const root = document.documentElement;
@@ -28,25 +16,48 @@
 
             const container = document.getElementById("areaSortable");
 
-            if (container ) { //&& window.innerWidth > 768
+            if (container ) {
               new Sortable(container, {
                 animation: 150,
-                draggable: ".sortable-items", // Only these are sortable
+                draggable: ".sortable-items", 
                 onEnd: function () {
                   const ids = Array.from(
                     container.querySelectorAll(".sortable-items")
                   ).map((el) => el.id);
-                  localStorage.setItem("dashboard_order", JSON.stringify(ids));
+                
                   const order = JSON.stringify(ids);
 
-                  document.cookie =
-                    "dashboard_order=" + encodeURIComponent(order) + "; path=/";
+                    const formData = new FormData();
+                  formData.append('var', 'field_dashboard_order');
+                  formData.append('value', order);
+
+                
+                  fetch('/v1/api_user_pleiade/setVariablesValue', {
+                    method: 'POST',
+                    body: formData,
+                   
+                  })
+                  .then(response => {
+                    if (!response.ok) {
+                   
+                      throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                   
+                    return response.json(); // or response.text()
+                  })
+                  .then(data => {
+                  
+                    console.log('Dashboard order saved successfully:', data);
+                  })
+                  .catch(error => {
+                    
+                    console.error('Error saving dashboard order:', error);
+                  });
                 },
               });
             }
 
-            // Scroll to top
-            //  window.scrollTo(0, 0);
+          
           });
 
       }

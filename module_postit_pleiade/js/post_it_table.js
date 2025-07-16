@@ -11,6 +11,21 @@
 
         let zIndexCounter = 1;
 
+        // *** NEW: Debounce function to limit how often saveItems is called ***
+        // This prevents sending a request to the server on every single keystroke.
+        function debounce(func, delay = 500) { // 500ms delay
+          let timeoutId;
+          return function (...args) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+              func.apply(this, args);
+            }, delay);
+          };
+        }
+
+        // Create a debounced version of the save function
+        const debouncedSave = debounce(saveItems);
+
         init();
 
         function init() {
@@ -29,7 +44,7 @@
           const color = document.getElementById("color").value;
           if (!message) return;
 
-          const item = createItem(message, 10, 5, color); // Default top 10%, left 5%
+          const item = createItem(message, 10, 5, color);
           dashboard.appendChild(item);
           makeEditable(item);
           enableDrag(item);
@@ -43,11 +58,18 @@
             item?.remove();
             saveItems();
           }
+          // The click-to-focus logic is now implicitly handled by the browser
+          // because the drag event won't interfere with clicks on the <p> tag.
         }
 
         function makeEditable(item) {
           const p = item.querySelector("p");
           p.setAttribute("contenteditable", "true");
+
+          // *** MODIFIED: Save automatically while typing (debounced) ***
+          p.addEventListener("input", debouncedSave);
+
+          // Also save when the user clicks away, for immediate confirmation.
           p.addEventListener("blur", saveItems);
         }
 
@@ -64,6 +86,8 @@
           item.style.height = "150px";
           item.style.boxShadow = "0 2px 5px rgba(0,0,0,0.2)";
           item.style.borderRadius = "8px";
+          // *** MODIFIED: Set the default cursor for the whole item to 'grab' ***
+          item.style.cursor = "grab";
 
           const tape = document.createElement("div");
           tape.classList.add("tape");
@@ -75,7 +99,8 @@
           p.style.height = "100%";
           p.style.overflowY = "auto";
           p.style.fontSize = "12px";
-          p.style.cursor = "grab";
+          // *** MODIFIED: The text area should have a 'text' cursor to indicate it's editable ***
+          p.style.cursor = "text";
           item.appendChild(p);
 
           const removeBtn = document.createElement("span");
@@ -90,6 +115,8 @@
 
           return item;
         }
+        
+        // ... (isLight, hexToRgb, deleteAllItems, saveItems, retrieveItems functions remain unchanged) ...
 
         function isLight(color) {
           const rgb = hexToRgb(color);
@@ -126,6 +153,8 @@
 
         function saveItems() {
           const items = [];
+          // Check if dashboard exists to prevent errors if it's not on the page
+          if (!dashboard) return;
           const dashboardRect = dashboard.getBoundingClientRect();
           const itemElements = dashboard.getElementsByClassName("item");
 
@@ -133,8 +162,6 @@
             const p = item.querySelector("p");
             const message = p.innerHTML;
             const color = item.style.background;
-            const topPx = parseFloat(item.style.top);
-            const leftPx = parseFloat(item.style.left);
             const top = (item.offsetTop / dashboard.offsetHeight) * 100;
             const left = (item.offsetLeft / dashboard.offsetWidth) * 100;
             const textColor = p.style.color;
@@ -195,13 +222,21 @@
           let offsetX = 0,
             offsetY = 0;
           let isDragging = false;
-
+          
+          // *** MODIFIED: Attach listener to the whole item ***
           element.addEventListener("mousedown", function (e) {
-            if (e.target.classList.contains("remove-btn")) return;
+            // *** MODIFIED: CRITICAL CHECK ***
+            // If the click is on the paragraph or the remove button, do not start dragging.
+            if (e.target.tagName === "P" || e.target.classList.contains("remove-btn")) {
+              return;
+            }
+
             e.preventDefault();
             isDragging = true;
             zIndexCounter++;
             element.style.zIndex = zIndexCounter;
+            // Change cursor to 'grabbing' during drag
+            element.style.cursor = "grabbing";
 
             const rect = element.getBoundingClientRect();
             const dashboardRect = dashboard.getBoundingClientRect();
@@ -210,7 +245,6 @@
 
             function onMouseMove(e) {
               if (!isDragging) return;
-
               const x = e.clientX - dashboardRect.left - offsetX;
               const y = e.clientY - dashboardRect.top - offsetY;
 
@@ -235,6 +269,8 @@
             function onMouseUp() {
               if (isDragging) {
                 isDragging = false;
+                // Restore the 'grab' cursor when drag ends
+                element.style.cursor = "grab";
                 saveItems();
                 document.removeEventListener("mousemove", onMouseMove);
                 document.removeEventListener("mouseup", onMouseUp);

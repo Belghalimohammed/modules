@@ -83,6 +83,7 @@ class PleiadeUserFieldsConfig extends ConfigFormBase
       '#type' => 'textfield',
       '#title' => $this->t("Nombre d'informations"),
       '#default_value' => $config->get('coll_count'),
+       '#description' => $this->t('cn, sn, givenName, initials, description, jpegPhoto, l, st, postalAddress, roomNumber, telephoneNumber, mobile, pager, facsimileTelephoneNumber, labeledURI, base, uid, preferredLanguage, userPassword, displayName, homePostalAddress, homePhone, title, o, ou, departmentNumber, employeeNumber, employeeType, manager')
     ];
 
     $count = $config->get('coll_count');
@@ -92,6 +93,7 @@ class PleiadeUserFieldsConfig extends ConfigFormBase
       $count = intval($count);
     }
 
+    
     for ($i = 0; $i < $count; $i++) {
       $form['row_' . $i] = [
         '#type' => 'container',

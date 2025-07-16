@@ -2,7 +2,7 @@ api_zimbra_pleiade.settings:
   path: '/admin/config/api_zimbra_pleiade/settings'
   defaults:
     _form: '\Drupal\api_zimbra_pleiade\Form\PleiadeConnectorZimbraConfig'
-    _title: 'API Pastell Pléiade Settings'
+    _title: 'API Zimbra Pléiade Settings'
   requirements:
     _permission: 'administer site configuration'
     

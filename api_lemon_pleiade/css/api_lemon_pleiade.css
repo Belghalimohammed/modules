@@ -184,6 +184,18 @@ div.long-category span.hide-menu {
     border-left: 3px solid transparent;
 }
 
+#menuFavoris .sidebar-link, .sidebar-nav ul .sidebar-item .sidebar-link, #mes_applications .sidebar-link {
+    padding: 2px 0 0 15px;
+    display: flex;
+    /* white-space: nowrap; */
+    align-items: center;
+    position: relative;
+    line-height: 25px;
+    font-size: 18px;
+    opacity: 0.8;
+    color: var(--text-menu-color);
+    border-left: 3px solid transparent;
+}
 #menuLemon .sidebar-nav .has-arrow::after {
     top: 15px !important;
     right: 3px !important;

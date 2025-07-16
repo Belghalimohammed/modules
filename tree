@@ -1,0 +1,400 @@
+.
+├── accessibility_tools
+│   ├── accessibility_tools.info.yml
+│   ├── accessibility_tools.libraries.yml
+│   ├── accessibility_tools.module
+│   ├── css
+│   │   └── accessibility_tools.css
+│   ├── js
+│   │   ├── accessibility_tools.js
+│   │   └── lib
+│   │       └── slick.js
+│   └── src
+│       └── Plugin
+│           └── Block
+├── api_glpi_pleiade
+│   ├── api_glpi_pleiade.info.yml
+│   ├── api_glpi_pleiade.libraries.yml
+│   ├── api_glpi_pleiade.links.menu.yml
+│   ├── api_glpi_pleiade.module
+│   ├── api_glpi_pleiade.routing.yml
+│   ├── css
+│   │   └── api_glpi_pleiade.css
+│   ├── js
+│   │   ├── api_glpi_desktop_block.js
+│   │   ├── api_glpi_page_ticket.js
+│   │   ├── api_glpi_page_ticket.js.save
+│   │   ├── api_glpi_pleiade.js
+│   │   └── lib
+│   │       ├── custom.jquery.dataTables.js
+│   │       ├── dataTables.bootstrap5.min.js
+│   │       ├── jquery.dataTables.js
+│   │       ├── jquery.dataTables.min.js
+│   │       └── moment.js
+│   └── src
+│       ├── Controller
+│       │   ├── GlpiController.php
+│       │   └── GlpiController.php.save
+│       └── Form
+│           └── GlpiFields.php
+├── api_humhub_pleiade
+│   ├── api_humhub_pleiade.info.yml
+│   ├── api_humhub_pleiade.libraries.yml
+│   ├── api_humhub_pleiade.links.menu.yml
+│   ├── api_humhub_pleiade.module
+│   ├── api_humhub_pleiade.routing.yml
+│   ├── css
+│   │   └── api_humhub_pleiade.css
+│   ├── js
+│   │   ├── api_humhub_pleiade_block.js
+│   │   └── api_humhub_pleiade.js
+│   └── src
+│       ├── Controller
+│       │   └── humHubController.php
+│       └── Form
+│           └── HumHubapiFieldsConfig.php
+├── api_lemon_pleiade
+│   ├── api_lemon_pleiade.info.yml
+│   ├── api_lemon_pleiade.libraries.yml
+│   ├── api_lemon_pleiade.links.menu.yml
+│   ├── api_lemon_pleiade.module
+│   ├── api_lemon_pleiade.routing.yml
+│   ├── CHANGELOG.md
+│   ├── config
+│   │   └── install
+│   │       └── api_lemon_pleiade.settings.yml
+│   ├── css
+│   │   └── api_lemon_pleiade.css
+│   ├── js
+│   │   ├── add_submenu.js
+│   │   ├── api_lemon_pleiade_desktop_blocks.js
+│   │   ├── api_lemon_pleiade_history.js
+│   │   ├── api_lemon_pleiade_sidebar_menu.js
+│   │   ├── api_lemon_pleiade_sidebar_menu.js.old
+│   │   ├── api_lemon_pleiade_user_infos_block.js
+│   │   ├── async.js
+│   │   └── libs
+│   │       └── sortable.min.js
+│   ├── LICENSE.txt
+│   ├── README.md
+│   └── src
+│       ├── Controller
+│       │   └── PleiadeAjaxController.php
+│       └── Form
+│           └── PleiadeSSOapiFieldsConfig.php
+├── api_moodle_pleiade
+│   ├── api_moodle_pleiade.info.yml
+│   ├── api_moodle_pleiade.libraries.yml
+│   ├── api_moodle_pleiade.links.menu.yml
+│   ├── api_moodle_pleiade.module
+│   ├── api_moodle_pleiade.routing.yml
+│   ├── css
+│   │   ├── api_moodle_pleiade.css
+│   │   └── owl.css
+│   ├── js
+│   │   ├── api_moodle_pleiade.js
+│   │   └── lib
+│   │       └── slick.js
+│   └── src
+│       ├── Controller
+│       │   └── MoodleController.php
+│       └── Form
+│           └── MoodleFields.php
+├── api_nextcloud_pleiade
+│   ├── api_nextcloud_pleiade.info.yml
+│   ├── api_nextcloud_pleiade.libraries.yml
+│   ├── api_nextcloud_pleiade.links.menu.yml
+│   ├── api_nextcloud_pleiade.module
+│   ├── api_nextcloud_pleiade.routing.yml
+│   ├── api_nextcloud_pleiade.services.yml
+│   ├── css
+│   │   └── api_nextcloud_pleiade.css
+│   ├── js
+│   │   └── api_nextcloud_pleiade.js
+│   └── src
+│       ├── Controller
+│       │   ├── NextcloudController.php
+│       │   ├── NextcloudController.php.bak
+│       │   └── NextcloudController.php.bal
+│       └── Form
+│           └── NextcloudFields.php
+├── api_parapheur_pleiade
+│   ├── api_parapheur_pleiade.info.yml
+│   ├── api_parapheur_pleiade.libraries.yml
+│   ├── api_parapheur_pleiade.links.menu.yml
+│   ├── api_parapheur_pleiade.module
+│   ├── api_parapheur_pleiade.routing.yml
+│   ├── api_parapheur_pleiade.services.yml
+│   ├── css
+│   │   └── api_parapheur_pleiade.css
+│   ├── js
+│   │   └── api_parapheur_pleiade.js
+│   └── src
+│       ├── Controller
+│       │   └── PleiadeAjaxParapheurController.php
+│       ├── Form
+│       │   └── PleiadeParapheurApiFieldsConfig.php
+│       └── Service
+│           └── PleiadeAjaxParapheurService.php
+├── api_pastell_pleiade
+│   ├── api_pastell_pleiade.info.yml
+│   ├── api_pastell_pleiade.install
+│   ├── api_pastell_pleiade.libraries.yml
+│   ├── api_pastell_pleiade.links.menu.yml
+│   ├── api_pastell_pleiade.module
+│   ├── api_pastell_pleiade.routing.yml
+│   ├── config
+│   │   └── install
+│   │       └── api_pastell_pleiade.settings.yml
+│   ├── css
+│   │   ├── api_pastell_doclots.css
+│   │   ├── api_pastell_pleiade.css
+│   │   └── images
+│   │       ├── sort_asc_disabled.png
+│   │       ├── sort_asc.png
+│   │       ├── sort_both.png
+│   │       ├── sort_desc_disabled.png
+│   │       └── sort_desc.png
+│   ├── js
+│   │   ├── api_pastell_doclots.js
+│   │   ├── api_pastell_documents.js
+│   │   ├── api_pastell_entites.js
+│   │   ├── api_pastell_menu.js
+│   │   └── libs
+│   │       ├── custom.jquery.dataTables.js
+│   │       ├── dataTables.bootstrap5.min.js
+│   │       ├── jquery.dataTables.js
+│   │       ├── jquery.dataTables.min.js
+│   │       └── moment.js
+│   └── src
+│       ├── Controller
+│       │   └── PleiadeAjaxPastellController.php
+│       └── Form
+│           ├── PleiadePastellapiFieldsConfig.php
+│           └── PleiadePastellDocLotsForm.php
+├── api_user_pleiade
+│   ├── api_user_pleiade.info.yml
+│   ├── api_user_pleiade.libraries.yml
+│   ├── api_user_pleiade.links.menu.yml
+│   ├── api_user_pleiade.module
+│   ├── api_user_pleiade.routing.yml
+│   ├── css
+│   │   ├── api_user_pleiade.css
+│   │   ├── img
+│   │   │   └── bell_with_circle.svg
+│   │   └── lib
+│   │       └── slick.css
+│   ├── js
+│   │   ├── api_user_infos.js
+│   │   ├── api_user_pleiade.js
+│   │   ├── bell.svg
+│   │   ├── bell_with_circle.svg
+│   │   ├── lib
+│   │   │   ├── slick.js
+│   │   │   └── steptip.js
+│   │   └── post_it_table.js
+│   └── src
+│       ├── Controller
+│       │   └── PleiadeUserController.php
+│       ├── Form
+│       │   └── PleiadeUserFieldsConfig.php
+│       └── Service
+│           └── PleiadeUserService.php
+├── api_watcha_pleiade
+│   ├── api_watcha_pleiade.info.yml
+│   ├── api_watcha_pleiade.install
+│   ├── api_watcha_pleiade.libraries.yml
+│   ├── api_watcha_pleiade.links.menu.yml
+│   ├── api_watcha_pleiade.module
+│   ├── api_watcha_pleiade.routing.yml
+│   ├── api_watcha_pleiade.services.yml
+│   ├── css
+│   │   └── api_watcha_pleiade.css
+│   ├── js
+│   │   ├── lib
+│   │   │   ├── js
+│   │   │   ├── log
+│   │   │   ├── matrix-init.js
+│   │   │   ├── matrix-utils.js
+│   │   │   ├── message-handler.js
+│   │   │   ├── node_modules
+│   │   │   ├── package.json
+│   │   │   ├── slick.js
+│   │   │   ├── toDelete
+│   │   │   ├── webpack.config.js
+│   │   │   └── yarn.lock
+│   │   ├── script.js
+│   │   ├── utils.js
+│   │   └── watcha-notifications.js
+│   └── src
+│       ├── Controller
+│       │   ├── BaseController.php
+│       │   └── PleiadeAjaxWatchaController.php
+│       ├── Form
+│       │   └── PleiadeConnectorWatchaConfig.php
+│       └── Service
+│           ├── WatchaServiceInterface.php
+│           └── WatchaService.php
+├── api_zimbra_pleiade
+│   ├── api_zimbra_pleiade.info.yml
+│   ├── api_zimbra_pleiade.install
+│   ├── api_zimbra_pleiade.libraries.yml
+│   ├── api_zimbra_pleiade.links.menu.yml
+│   ├── api_zimbra_pleiade.module
+│   ├── api_zimbra_pleiade.routing.yml
+│   ├── css
+│   │   └── api_zimbra_pleiade.css
+│   ├── js
+│   │   ├── api_zimbra_add_img_user_pleiade.js
+│   │   ├── api_zimbra_agenda_pleiade.js
+│   │   ├── api_zimbra_agenda_pleiade.js.save
+│   │   ├── api_zimbra_agenda_pleiade.js.save.1
+│   │   ├── api_zimbra_full_calendar.js
+│   │   ├── api_zimbra_pleiade.js
+│   │   └── libs
+│   │       ├── fullcalendar
+│   │       ├── rrule_connector.js
+│   │       └── rrule.js
+│   └── src
+│       ├── Controller
+│       │   ├── PleiadeAjaxZimbraControllerOK.php.old
+│       │   ├── PleiadeAjaxZimbraController.php
+│       │   ├── PleiadeAjaxZimbraController.php.back.sitiv
+│       │   ├── PleiadeAjaxZimbraController.php.old
+│       │   └── PleiadeAjaxZimbraController.php.save
+│       └── Form
+│           └── PleiadeConnectorZimbraConfig.php
+├── datatable_pleiade
+│   ├── css
+│   │   ├── datatable_pleiade.css
+│   │   └── images
+│   │       ├── sort_asc_disabled.png
+│   │       ├── sort_asc.png
+│   │       ├── sort_both.png
+│   │       ├── sort_desc_disabled.png
+│   │       └── sort_desc.png
+│   ├── datatable_pleiade.info.yml
+│   ├── datatable_pleiade.libraries.yml
+│   ├── datatable_pleiade.links.menu.yml
+│   ├── datatable_pleiade.module
+│   ├── datatable_pleiade.routing.yml
+│   ├── js
+│   │   ├── datatable_pleiade.js
+│   │   ├── datatable_pleiade.js.save
+│   │   ├── datatable_pleiade.js.save.1
+│   │   ├── libs
+│   │   │   ├── custom.jquery.dataTables.js
+│   │   │   ├── dataTables.bootstrap5.min.js
+│   │   │   ├── jquery.dataTables.js
+│   │   │   ├── jquery.dataTables.min.js
+│   │   │   └── moment.js
+│   │   └── popper.js
+│   └── src
+│       ├── Controller
+│       │   ├── DatatableController.php
+│       │   └── DatatableController.php.old
+│       └── Form
+│           └── DatatableFields.php
+├── guide_utilisateur_pleiade
+│   ├── css
+│   │   └── guide_utilisateur_pleiade.css
+│   ├── guide_utilisateur_pleiade.info.yml
+│   ├── guide_utilisateur_pleiade.libraries.yml
+│   ├── guide_utilisateur_pleiade.module
+│   ├── guide_utilisateur_pleiade.routing.yml
+│   ├── js
+│   │   ├── guide_utilisateur_pleiade.js
+│   │   └── lib
+│   │       └── slick.js
+│   └── src
+│       └── Controller
+│           └── UserGuideController.php
+├── LICENSE
+├── module_actu_pleiade
+│   ├── css
+│   │   └── module_actu_pleiade.css
+│   ├── js
+│   │   ├── lib
+│   │   │   └── slick.js
+│   │   └── module_actu_pleiade.js
+│   ├── module_actu_pleiade.info.yml
+│   ├── module_actu_pleiade.install
+│   ├── module_actu_pleiade.libraries.yml
+│   ├── module_actu_pleiade.links.menu.yml
+│   ├── module_actu_pleiade.module
+│   ├── module_actu_pleiade.routing.yml
+│   ├── module_actu_pleiade.services.yml
+│   └── src
+│       ├── Controller
+│       │   └── ActuPleiadeController.php
+│       ├── Form
+│       │   └── ActuFormController.php
+│       └── Service
+│           └── ActuPleiadeService.php
+├── module_api_pleiade
+│   ├── module_api_pleiade.info.yml
+│   ├── module_api_pleiade.module
+│   └── src
+│       ├── ApiPleiadeManager.php
+│       ├── ApiPleiadeManager.php.save
+│       ├── ApiPleiadeManager.php.save.1
+│       └── -b
+├── module_general_pleiade
+│   ├── js
+│   │   ├── module_general_pleiade.js
+│   │   └── scrollToApps.js
+│   ├── module_generale_pleiade.links.menu.yml
+│   ├── module_general_pleiade.info.yml
+│   ├── module_general_pleiade.libraries.yml
+│   ├── module_general_pleiade.links.menu.yml
+│   ├── module_general_pleiade.module
+│   ├── module_general_pleiade.routing.yml
+│   └── src
+│       └── Form
+│           └── ModuleGeneralPleiadeConfigForm.php
+├── module_postit_pleiade
+│   ├── css
+│   │   └── module_postit_pleiade.css
+│   ├── js
+│   │   └── post_it_table.js
+│   ├── module_postit_pleiade.info.yml
+│   ├── module_postit_pleiade.libraries.yml
+│   ├── module_postit_pleiade.module
+│   ├── module_postit_pleiade.routing.yml
+│   └── src
+│       └── Controller
+│           └── PostItController.php
+├── msg_informatif_pleiade
+│   ├── css
+│   │   └── msg_informatif_pleiade.css
+│   ├── js
+│   │   └── msg_informatif_pleiade.js
+│   ├── msg_informatif_pleiade.info.yml
+│   ├── msg_informatif_pleiade.install
+│   ├── msg_informatif_pleiade.libraries.yml
+│   ├── msg_informatif_pleiade.links.menu.yml
+│   ├── msg_informatif_pleiade.module
+│   ├── msg_informatif_pleiade.routing.yml
+│   ├── readme.md
+│   └── src
+│       └── Controller
+│           └── AlerteModuleController.php
+├── notification_module_pleiade
+│   ├── css
+│   │   └── notification_module_pleiade.css
+│   ├── js
+│   │   └── notification_module_pleiade.js
+│   ├── notification_module_pleiade.info.yml
+│   ├── notification_module_pleiade.install
+│   ├── notification_module_pleiade.libraries.yml
+│   ├── notification_module_pleiade.links.menu.yml
+│   ├── notification_module_pleiade.module
+│   ├── notification_module_pleiade.routing.yml
+│   ├── readme.md
+│   └── src
+│       └── Controller
+│           └── NotificationModuleController.php
+├── README.md
+└── tree
+
+131 directories, 266 files

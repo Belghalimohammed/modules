@@ -215,12 +215,13 @@ class PleiadeUserController extends ControllerBase
     return new RedirectResponse("/");
   }
 
-
-
   public function setVariables(Request $request)
   {
     if ($request->get("var") == "field_isnextcloudactivated" && empty($this->user->get('field_nextcloud_api_key')->value)) {
       $this->user->set($request->get("var"), true);
+    } else  if ($request->get("var") == "field_iswatchaactivated" && empty($this->user->get('field_watchaaccesstoken')->value)) {
+      $this->user->set($request->get("var"), true);
+      $this->user->save();
     } else {
       $this->user->set($request->get("var"), !$this->user->get($request->get("var"))->value);
       $this->user->save();
@@ -234,5 +235,18 @@ class PleiadeUserController extends ControllerBase
       "isMenuOpened" => $this->user->get("field_ismenuopened")->value,
       "isPostitActivated" => $this->user->get("field_ispostitactivated")->value,
     ], 200);
+  }
+  public function setVariablesValue(Request $request)
+  {
+
+    $this->user->set($request->get("var"), $request->get("value"));
+    $this->user->save();
+    return new JsonResponse([], 200);
+  }
+
+  public function getVariablesValue(Request $request)
+  {
+    $data = $this->user->get($request->get("var"))->value;
+    return new JsonResponse($data, 200);
   }
 }

@@ -55,15 +55,10 @@ class ActuPleiadeService
         foreach ($feed->get_items() as $item) {
             if ($count++ >= $max) break;
 
-            $created = $item->get_date('d-m-Y H:i');
+            $created = $item->get_date('d-m-Y');
             $title = $item->get_title();
             $link = $item->get_permalink();
-            $tags = [];
-            if ($item->get_categories()) {
-                foreach ($item->get_categories() as $category) {
-                    $tags[] = $category->get_label();
-                }
-            }
+          
             $image = null;
 
             $enclosure = $item->get_enclosure();
@@ -96,7 +91,7 @@ class ActuPleiadeService
             $actu = [
                 "created" => $created,
                 "field_image" => $image,
-                "field_tags" => implode(', ', $tags),
+               
                 "title" => $title,
                 "view_node" => $link,
                 "collectivite" => $collectivite

@@ -18,16 +18,12 @@ class PleiadeUserService
         $this->annuaireLogin =  $this->config->get("annuaire_login");
         $this->annuairePassword =  $this->config->get("annuaire_password");
         $this->annuaireUrl =  $this->config->get("annuaire_url");
-
-
         $user_storage =  \Drupal::entityTypeManager()->getStorage('user');
         $this->user = $user_storage->load(\Drupal::currentUser()->id());
     }
 
-
     function getAnnuaireInfos()
     {
-
         try {
             $client = new Client();
             $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
@@ -56,10 +52,7 @@ class PleiadeUserService
 
     function annuaire_auth_flow()
     {
-
-
         $this->getAnnuaireToken();
-
         $this->getAnnuaireDn();
     }
     function getAnnuaireToken()

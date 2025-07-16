@@ -2,6 +2,8 @@
 
 namespace Drupal\api_glpi_pleiade\Controller;
 
+use Drupal\api_glpi_pleiade\Service\GlpiService;
+use Drupal\api_glpi_pleiade\Service\LemonService;
 use Drupal\Core\Controller\ControllerBase;
 
 use Drupal\Component\Serialization\JSON;
@@ -16,6 +18,8 @@ class GlpiController extends ControllerBase
 {
   private $settings_glpi;
   private $client;
+  private $service;
+  private $lemonService;
   public function __construct()
   {
     $moduleHandler = \Drupal::service('module_handler');
@@ -23,6 +27,8 @@ class GlpiController extends ControllerBase
       $this->settings_glpi = \Drupal::config('api_glpi_pleiade.settings');
     }
     $this->client = \Drupal::httpClient();
+    $this->service = new GlpiService();
+    $this->lemonService = new LemonService();
   }
   public function glpi_list_tickets(Request $request)
   {
@@ -41,10 +47,10 @@ class GlpiController extends ControllerBase
 
       if (in_array($settings_glpi->get('glpi_group'), $groupDataArray)) {
 
-        $glpiDataAPI = new ApiPleiadeManager();
-        $return = $glpiDataAPI->getGLPITickets();
+       
+        $return = $this->service->getGLPITickets();
         
-        $returnEmailUser = $glpiDataAPI->searchMySession();
+        $returnEmailUser = $this->lemonService->searchMySession();
 
         $userEmail = $returnEmailUser['mail'];
 
@@ -57,7 +63,7 @@ class GlpiController extends ControllerBase
             $ticketId = $ticket['id'];
 
             // Effectuer la requête en utilisant $glpiDataAPI->getStatutActorGLPI() avec $ticketId
-            $statut = $glpiDataAPI->getStatutActorGLPI($ticketId);
+            $statut = $this->service->getStatutActorGLPI($ticketId);
 
             // Créer un tableau pour stocker les données extraites de $newData
             $newData = array();

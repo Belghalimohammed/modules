@@ -1,12 +1,14 @@
-
-
 let myUserId, myAccessToken, synapseServer, watchaUrl;
 let watchaBar, container;
 let nextBatch = null;
+let myFilterId = null;
+let render = false;
 const globalNotifications = {};
 const eventIdToRoomMap = {};
 const roomInfoCache = {};
 const userProfileCache = {};
+const DEFAULT_AVATAR_URL =
+  "https://pleiade-test.sitiv.fr/sites/default/files/default_images/blank-profile-picture-gb0f9530de_640.png";
 
 async function fetchMatrixConfig() {
   const res = await fetch("/v1/api_watcha_pleiade/getConfig");
@@ -15,9 +17,9 @@ async function fetchMatrixConfig() {
     return null;
   }
   const { data } = await res.json();
+  console.log("config gone", data);
   return data;
 }
-// ---------------- MAIN INIT ----------------
 
 async function initMatrixClient() {
   try {
@@ -26,14 +28,25 @@ async function initMatrixClient() {
 
     ({ myUserId, myAccessToken, synapseServer, synapseServerApi, watchaUrl } =
       config);
+    if (myUserId == null)
+      window.location.href = Drupal.url(
+        "v1/api_watcha_pleiade/watcha_auth_flow"
+      );
+    if (window.innerWidth < 768) {
+      const $carousel = jQuery(container);
+      try {
+        await waitForSlick($carousel);
+      } catch (e) {
+        console.error("Slick not ready:", e.message);
+        return;
+      }
+    }
 
     startSyncLoop(container, watchaBar, watchaUrl, myUserId);
   } catch (err) {
     console.error("Matrix initialization error:", err);
   }
 }
-
-// ---------------- DOM READY ----------------
 
 function waitForElementsAndStart() {
   const observer = new MutationObserver(() => {
@@ -48,22 +61,65 @@ function waitForElementsAndStart() {
       observer.disconnect();
       if (refs.container) {
         sessionStorage.setItem("notificationsCount", "0");
-        initMatrixClient();
+        initMatrixClient(render);
       }
     }
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
 }
-
-document.addEventListener("DOMContentLoaded", waitForElementsAndStart);
-
+if (!localStorage.getItem("watcha")) {
+  localStorage.setItem("watcha", "block");
+}
+if (localStorage.getItem("watcha") === "block") {
+  render = true;
+  waitForElementsAndStart();
+} else {
+  render = false;
+  waitForElementsAndStart();
+  const storageCheckInterval = setInterval(() => {
+    if (localStorage.getItem("watcha") === "block") {
+      clearInterval(storageCheckInterval);
+      render = true;
+      if (
+        document.getElementById("watcha_block_id") &&
+        document.getElementById("watcha")
+      ) {
+        container = document.getElementById("watcha_block_id");
+        watchaBar = document.getElementById("watcha");
+        sessionStorage.setItem("notificationsCount", "0");
+        render = true;
+        if (window.innerWidth > 768) {
+          renderMessages(globalNotifications, {
+            container,
+            watchaBar,
+            watchaUrl,
+            myUserId,
+          });
+        } else {
+          renderMessagesPhone(globalNotifications, {
+            container,
+            watchaBar,
+            watchaUrl,
+            myUserId,
+          });
+        }
+        // initMatrixClient();
+      } else {
+        // waitForElementsAndStart();
+      }
+    }
+  }, 200);
+}
 async function startSyncLoop(container, watchaBar, watchaUrl, myUserId) {
   try {
-    // Step 1: Initial sync with full filter
-    const initUrl = `${synapseServer}/_matrix/client/v3/sync?filter=%7B%22room%22%3A%7B%22timeline%22%3A%7B%22unread_thread_notifications%22%3Atrue%2C%22limit%22%3A20%7D%2C%22state%22%3A%7B%22lazy_load_members%22%3Atrue%7D%7D%7D&full_state=false`;
+    myFilterId = await getOrCreateFilter(myUserId, myAccessToken);
+    if (!myFilterId) {
+      throw new Error("Could not get a filter ID. Sync cannot start.");
+    }
 
-    console.log("go");
+    const initUrl = `${synapseServer}/_matrix/client/v3/sync?filter=${myFilterId}`;
+
     const initialRes = await fetch(initUrl, {
       headers: {
         Authorization: `Bearer ${myAccessToken}`,
@@ -71,255 +127,310 @@ async function startSyncLoop(container, watchaBar, watchaUrl, myUserId) {
     });
 
     if (!initialRes.ok) {
-      throw new Error("Initial sync failed");
+      window.location.href = Drupal.url(
+        "v1/api_watcha_pleiade/watcha_auth_flow"
+      );
     }
 
     const initialData = await initialRes.json();
-    console.log("done")
     nextBatch = initialData.next_batch;
-    renderMessages(await handleSyncResponse(initialData, true), {
-      container,
-      watchaBar,
-      watchaUrl,
+    if (render) {
+      let notifications = await handleSyncResponse(initialData, true);
+      if (window.innerWidth > 768) {
+        renderMessages(notifications, {
+          container,
+          watchaBar,
+          watchaUrl,
+          myUserId,
+        });
+      } else {
+        renderMessagesPhone(notifications, {
+          container,
+          watchaBar,
+          watchaUrl,
+          myUserId,
+        });
+      }
+    } else {
+      let notifications = await handleSyncResponse(initialData, true);
+      let mergedNotifications = Object.values(notifications);
+      updateTabTitle(mergedNotifications.length, watchaBar);
+    }
 
-      myUserId,
-    });
-    // Step 2: Continue syncing every 30 seconds with filter=0
-    setInterval(() => {
-      syncWithFilter0(container, watchaBar, watchaUrl, myUserId);
-    }, 500);
+    await syncLoop(container, watchaBar, watchaUrl, myUserId);
   } catch (err) {
     console.error("Sync loop error:", err.message);
   }
 }
 
-async function syncWithFilter0(container, watchaBar, watchaUrl, myUserId) {
-  if (!nextBatch) return;
+async function syncLoop(container, watchaBar, watchaUrl, myUserId) {
+  let sinceToken = nextBatch;
 
-  const url = `${synapseServer}/_matrix/client/v3/sync?filter=%7B%22room%22%3A%7B%22timeline%22%3A%7B%22unread_thread_notifications%22%3Atrue%2C%22limit%22%3A20%7D%2C%22state%22%3A%7B%22lazy_load_members%22%3Atrue%7D%7D%7D&full_state=false&since=${nextBatch}`;
+  while (true) {
+    try {
+      if (!sinceToken) {
+        console.error("Sync loop cannot continue without a 'since' token.");
+        await new Promise((r) => setTimeout(r, 5000));
+        continue;
+      }
 
-  try {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${myAccessToken}`,
-      },
-    });
+      const syncTimeout = 30000;
+      const url = `${synapseServer}/_matrix/client/v3/sync?filter=${myFilterId}&since=${sinceToken}&timeout=${syncTimeout}`;
 
-    if (!res.ok) {
-      throw new Error("Sync with filter=0 failed");
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${myAccessToken}`,
+        },
+      });
+
+      if (!res.ok) {
+        console.error(`Sync request failed with status: ${res.status}`);
+        await new Promise((r) => setTimeout(r, 5000));
+        continue;
+      }
+
+      const data = await res.json();
+
+      sinceToken = data.next_batch;
+
+      if (render) {
+        const notifications = await handleSyncResponse(data, false);
+
+        if (window.innerWidth > 768) {
+          renderMessages(notifications, {
+            container,
+            watchaBar,
+            watchaUrl,
+            myUserId,
+          });
+        } else {
+          renderMessagesPhone(notifications, {
+            container,
+            watchaBar,
+            watchaUrl,
+            myUserId,
+          });
+        }
+      } else {
+        let notifications = await handleSyncResponse(data, true);
+        let mergedNotifications = Object.values(notifications);
+        updateTabTitle(mergedNotifications.length, watchaBar);
+      }
+    } catch (err) {
+      console.error("Sync loop network error:", err.message);
+      await new Promise((r) => setTimeout(r, 5000));
     }
-
-    const data = await res.json();
-    nextBatch = data.next_batch;
-    renderMessages(await handleSyncResponse(data, false), {
-      container,
-      watchaBar,
-      watchaUrl,
-
-      myUserId,
-    });
-  } catch (err) {
-    console.error("Sync error:", err.message);
   }
 }
 
 function getMxcUrl(mxcUrl) {
   if (!mxcUrl) return null;
+  if (!mxcUrl.startsWith("mxc")) return DEFAULT_AVATAR_URL;
   const mediaId = mxcUrl.replace("mxc://", "");
   return `${synapseServer}/_matrix/media/v3/download/${mediaId}`;
 }
 
-async function handleSyncResponse(data, isInitial = false) {
-  const joinedRooms = data.rooms?.join ?? {};
-  const inviteRooms = data.rooms?.invite ?? {};
+function processTimelineInOnePass(timelineEvents, myUserId) {
+  const result = {
+    lastMessage: null,
+    editsMap: {},
+    redactedEventIds: new Set(),
+  };
 
-  for (const [roomId, roomData] of Object.entries(joinedRooms)) {
-    const notifCount = roomData.unread_notifications?.notification_count ?? 0;
-    const stateEvents = roomData.state?.events ?? [];
-      if (isInitial) {
-      for (const event of stateEvents) {
-        if (event.type === "m.room.name") {
-          roomInfoCache[roomId] = {
-            name: event.content?.name ?? roomId,
-          };
-        }
+  for (let i = timelineEvents.length - 1; i >= 0; i--) {
+    const event = timelineEvents[i];
 
-         if (event.type === "m.room.member") {
-          const userId = event.state_key;
-          const displayname = event.content?.displayname;
-          const avatar_url = event.content?.avatar_url;
-
-          userProfileCache[userId] = { displayname, avatar_url };
-        }
-      }
-
-       
-    }
-
- 
-    if (notifCount === 0) {
-      delete globalNotifications[roomId];
+    if (event.type === "m.room.redaction" && event.redacts) {
+      result.redactedEventIds.add(event.redacts);
       continue;
     }
 
-    // --- Get room name ---
-    let roomName = roomInfoCache[roomId]?.name ?? roomId;
-    
+    if (
+      event.type === "m.room.message" &&
+      event.content?.["m.relates_to"]?.rel_type === "m.replace"
+    ) {
+      const targetId = event.content["m.relates_to"].event_id;
+      if (!result.editsMap[targetId]) {
+        result.editsMap[targetId] = event.content;
+      }
+    }
 
-  
+    if (
+      !result.lastMessage &&
+      event.type === "m.room.message" &&
+      event.sender !== myUserId
+    ) {
+      const rel = event.content?.["m.relates_to"]?.rel_type;
+      if (rel !== "m.thread" && rel !== "m.replace") {
+        result.lastMessage = event;
+      }
+    }
+  }
+  return result;
+}
 
-    if (!roomInfoCache[roomId]) {
-      for (const event of roomData.timeline?.events ?? []) {
-        if (event.type === "m.room.name") {
-          roomInfoCache[roomId] = {
-            name: event.content?.name ?? roomId,
+async function fetchMissingUserProfiles(userIds, accessToken) {
+  const profilesToFetch = Array.from(userIds).map((userId) => {
+    const url = `${synapseServer}/_matrix/client/v3/profile/${encodeURIComponent(
+      userId
+    )}`;
+    return fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((profile) => ({ userId, profile }))
+      .catch((err) => {
+        console.warn(`Failed to fetch profile for ${userId}:`, err.message);
+        return { userId, profile: null };
+      });
+  });
+
+  const results = await Promise.all(profilesToFetch);
+
+  for (const { userId, profile } of results) {
+    if (profile) {
+      userProfileCache[userId] = {
+        displayname: profile.displayname,
+        avatar_url: profile.avatar_url || DEFAULT_AVATAR_URL,
+      };
+    } else {
+      userProfileCache[userId] = {
+        displayname: userId,
+        avatar_url: DEFAULT_AVATAR_URL,
+      };
+    }
+  }
+}
+
+async function handleSyncResponse(data, isInitial = false) {
+  const joinedRooms = data.rooms?.join ?? {};
+  const leavedRooms = data.rooms?.leave ?? {};
+  const inviteRooms = data.rooms?.invite ?? {};
+
+  for (const roomId in leavedRooms) {
+    delete globalNotifications[roomId];
+  }
+
+  const roomsToFormat = [];
+  const profilesToFetch = new Set();
+
+  for (const [roomId, roomData] of Object.entries(joinedRooms)) {
+    const notifCount = roomData.unread_notifications?.notification_count ?? 0;
+
+    const stateEvents =
+      [...roomData.state?.events, ...roomData.timeline?.events] ?? [];
+    for (const event of stateEvents) {
+      if (event.type === "m.room.name") {
+        roomInfoCache[roomId] = { name: event.content?.name ?? roomId };
+      }
+      if (event.type === "m.room.member") {
+        if (event.content?.displayname || event.content?.avatar_url) {
+          userProfileCache[event.state_key] = {
+            displayname: event.content.displayname,
+            avatar_url: event.content.avatar_url || DEFAULT_AVATAR_URL,
           };
+        }
+        if (!userProfileCache[event.state_key]) {
+          profilesToFetch.add(event.state_key);
         }
       }
     }
 
-    roomName = roomInfoCache[roomId]?.name ?? roomId;
+    if (notifCount === 0) {
+      //&& globalNotifications[roomId]?.type !== "invite"
+      delete globalNotifications[roomId];
 
-    const timelineEvents = roomData.timeline?.events ?? [];
-
-    // --- Populate member and name caches during initial sync ---
-   
-
-    for (const event of timelineEvents) {
-      if (event.type === "m.room.member") {
-        const userId = event.state_key;
-        const displayname = event.content?.displayname;
-        const avatar_url = event.content?.avatar_url;
-
-        userProfileCache[userId] = { displayname, avatar_url };
-      }
+      continue;
     }
 
-    // --- Collect edits and deletions ---
-    const redactedEventIds = new Set();
-    const editsMap = {};
+    const timelineData = processTimelineInOnePass(
+      roomData.timeline?.events ?? [],
+      myUserId
+    );
 
-    for (const event of timelineEvents) {
-      if (event.type === "m.room.redaction" && event.redacts) {
-        redactedEventIds.add(event.redacts);
-      }
-      if (
-        event.type === "m.room.message" &&
-        event.content?.["m.relates_to"]?.rel_type === "m.replace"
-      ) {
-        const targetId = event.content["m.relates_to"].event_id;
-        editsMap[targetId] = event.content;
-      }
+    if (
+      timelineData.lastMessage &&
+      !userProfileCache[timelineData.lastMessage.sender]
+    ) {
+      profilesToFetch.add(timelineData.lastMessage.sender);
     }
 
-    const events = timelineEvents.slice().reverse();
-    let newLastMessage = null;
+    roomsToFormat.push({ roomId, roomData, timelineData, notifCount });
+  }
 
-    for (const event of events) {
-      if (event.type !== "m.room.message") continue;
-      if (event.sender === myUserId) continue;
+  if (profilesToFetch.size > 0) {
+    await fetchMissingUserProfiles(profilesToFetch, myAccessToken);
+  }
 
-      const rel = event.content?.["m.relates_to"]?.rel_type;
-      if (rel === "m.thread" || rel === "m.replace") continue;
-
-      newLastMessage = event;
-      break;
-    }
-
+  for (const { roomId, roomData, timelineData, notifCount } of roomsToFormat) {
+    const { lastMessage, editsMap, redactedEventIds } = timelineData;
+    const roomName = roomInfoCache[roomId]?.name ?? roomId;
     const currentNotif = globalNotifications[roomId];
     const currentLastId = currentNotif?.event_id;
 
-    // --- Update deleted or edited message ---
-    if (currentLastId) {
+    if (currentNotif) {
       if (redactedEventIds.has(currentLastId)) {
-        currentNotif.message = "deleted";
-        currentNotif.unread = Math.max(0, currentNotif.unread - 1);
+        currentNotif.message = "message supprimé";
       } else if (editsMap[currentLastId]) {
-        const newBody = editsMap[currentLastId]["m.new_content"]?.body;
-        if (newBody) {
-          currentNotif.message = newBody;
-        }
+        currentNotif.message =
+          editsMap[currentLastId]["m.new_content"]?.body ??
+          currentNotif.message;
       }
+      currentNotif.unread = notifCount;
     }
 
-    // --- Set new message if changed ---
-    if (newLastMessage && newLastMessage.event_id !== currentLastId) {
-      const senderId = newLastMessage.sender;
-      let body = newLastMessage.content?.body ?? "";
-
-      // --- Get sender data from cache or fetch ---
-      let senderData = userProfileCache[senderId];
-
-      if (!senderData) {
-        try {
-          const profileRes = await fetch(
-            `${synapseServer}/_matrix/client/v3/profile/${encodeURIComponent(
-              senderId
-            )}`,
-            {
-              headers: { Authorization: `Bearer ${myAccessToken}` },
-            }
-          );
-          if (profileRes.ok) {
-            const profile = await profileRes.json();
-            senderData = {
-              displayname: profile.displayname,
-              avatar_url: profile.avatar_url,
-            };
-            userProfileCache[senderId] = senderData;
-          } else {
-            senderData = { displayname: senderId };
-          }
-        } catch (err) {
-          console.warn(`Failed to fetch profile for ${senderId}:`, err.message);
-          senderData = { displayname: senderId };
-        }
-      }
-
-      const displayName = senderData.displayname ?? senderId;
-      const avatarUrl = getMxcUrl(senderData.avatar_url);
+    if (lastMessage && lastMessage.event_id !== currentLastId) {
+      const senderId = lastMessage.sender;
+      const senderData = userProfileCache[senderId] || {
+        displayname: senderId,
+        avatar_url: DEFAULT_AVATAR_URL,
+      };
 
       globalNotifications[roomId] = {
         type: "unread",
         room_id: roomId,
         room_name: roomName === roomId ? "direct" : roomName,
         unread: notifCount,
-        message: body,
-        sender: displayName,
-        avatar_url: avatarUrl,
+        message: lastMessage.content?.body ?? "",
+        sender: senderData.displayname ?? senderId,
+        avatar_url: getMxcUrl(senderData.avatar_url),
         sender_id: senderId,
-        timestamp: newLastMessage.origin_server_ts,
-        event_id: newLastMessage.event_id,
+        timestamp: lastMessage.origin_server_ts,
+        event_id: lastMessage.event_id,
       };
-
-      eventIdToRoomMap[newLastMessage.event_id] = roomId;
+      eventIdToRoomMap[lastMessage.event_id] = roomId;
     }
   }
 
-  // --- Handle invites ---
   for (const [roomId, inviteData] of Object.entries(inviteRooms)) {
+    if (globalNotifications[roomId]?.type === "invite") continue;
+
     let roomName = "Invite";
-    let inviter = null;
+    let inviterId = null;
     let timestamp = null;
 
     for (const event of inviteData.invite_state?.events ?? []) {
-      if (event.type === "m.room.name") {
-        roomName = event.content?.name ?? roomName;
-      }
-      if (event.type === "m.room.member" && event.sender) {
-        inviter = event.sender;
+      if (
+        event.type === "m.room.member" &&
+        event.content?.membership === "invite" &&
+        event.state_key === myUserId
+      ) {
+        inviterId = event.sender;
         timestamp = event.origin_server_ts;
+        break;
       }
     }
 
-    let displayName = inviter;
-    let avatarUrl = null;
+    if (!inviterId) continue;
 
+    let inviterDisplayName = inviterId;
+    let inviterAvatarUrl = DEFAULT_AVATAR_URL;
     for (const event of inviteData.invite_state?.events ?? []) {
-      if (event.type === "m.room.member" && event.state_key === inviter) {
-        displayName = event.content?.displayname ?? inviter;
-        avatarUrl = getMxcUrl(event.content?.avatar_url);
-        break;
+      if (event.type === "m.room.name") {
+        roomName = event.content?.name ?? roomName;
+        roomInfoCache[roomId] = { name: roomName };
+      }
+      if (event.type === "m.room.member" && event.state_key === inviterId) {
+        inviterDisplayName = event.content?.displayname ?? inviterId;
+        inviterAvatarUrl = event.content?.avatar_url || DEFAULT_AVATAR_URL;
       }
     }
 
@@ -327,9 +438,9 @@ async function handleSyncResponse(data, isInitial = false) {
       type: "invite",
       room_id: roomId,
       room_name: roomName,
-      sender: displayName,
-      avatar_url: avatarUrl,
-      sender_id: inviter,
+      sender: inviterDisplayName,
+      avatar_url: getMxcUrl(inviterAvatarUrl),
+      sender_id: inviterId,
       timestamp,
       unread: 1,
     };
@@ -337,4 +448,3 @@ async function handleSyncResponse(data, isInitial = false) {
 
   return { ...globalNotifications };
 }
-

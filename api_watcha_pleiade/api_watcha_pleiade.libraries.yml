@@ -2,7 +2,7 @@ api_watcha_pleiade_js:
   version: 1.x
   js:
    
-    js/lib/slick.js: {} 
+    
     js/script.js: {} 
     js/utils.js: {} 
     js/watcha-notifications.js: {}    
@@ -10,6 +10,7 @@ api_watcha_pleiade_js:
   dependencies:
     - core/drupal
     - core/once
+    - accessibility_tools/slick
 api_watcha_pleiade_css:
   version: 1.x
   css:
