@@ -41,7 +41,7 @@
         ];
 
         const finalSortOrder = savedOrder || defaultSortOrder;
-
+      
         menuData.myapplications.sort((a, b) => {
           const indexA = finalSortOrder.indexOf(a.Category);
           const indexB = finalSortOrder.indexOf(b.Category);
@@ -189,14 +189,14 @@
       const appName = Object.keys(appData)[0];
       const app = appData[appName];
       const appId = app.AppTip?.replace(/[^\w]/gi, "").toLowerCase() || "";
-      const iconApp = app.AppIcon ? `<i class="fa fa-solid fa-${app.AppIcon}"></i>` : "";
+      const iconApp = app.AppIcon ? `<i class="fa fa-solid fa-${app.AppIcon}"></i>` : `<img src="${app.AppLogo}"  style="width:25px;height:25px" />`;
       
       let targetAttr = "_blank";
       if (['Consulter nos solutions', 'Consulter nos formations', 'Consulter nos guides utilisateurs', 'Demander une visio'].includes(app.AppDesc)) {
-        targetAttr = "";
+        targetAttr = app.AppTip;
       }
       if (app.AppTip === "Watcha") {
-        targetAttr = "watchaTab";
+        targetAttr = "watcha";
       }
 
       if (categoryName === "E-administration") {
@@ -205,14 +205,14 @@
             return `<a href="${app.AppUri}" target="_blank" class="sidebar-link"><span class="ps-2">${app.AppDesc}</span></a>`;
           } else {
             return `
-              <a class="sidebar-link waves-effect waves-dark has-arrow" id="${appId}" title="${app.AppDesc}" href="${app.AppUri}" aria-expanded="true" target="${targetAttr}" data-bs-toggle="collapse" data-bs-target="#collapse${app.AppTip}" aria-controls="collapse${app.AppTip}">
+              <a class="sidebar-link waves-effect waves-dark has-arrow" id="${appId}" data-text="${appName}" title="${app.AppDesc}" href="${app.AppUri}" aria-expanded="true" target="${targetAttr}" data-bs-toggle="collapse" data-bs-target="#collapse${app.AppTip}" aria-controls="collapse${app.AppTip}">
                 ${iconApp}
                 <span class="hide-menu px-2">${appName}</span>
               </a>`;
           }
         } else {
           return `
-            <span class="sidebar-link waves-effect waves-dark has-arrow" id="${appId}" title="${app.AppDesc}" aria-expanded="false" data-bs-toggle="collapse" data-bs-target="#collapse${appId}" aria-controls="collapse${app.AppTip}">
+            <span class="sidebar-link waves-effect waves-dark has-arrow" id="${appId}" data-text="${appName}" title="${app.AppDesc}" aria-expanded="false" data-bs-toggle="collapse" data-bs-target="#collapse${appId}" aria-controls="collapse${app.AppTip}">
               ${iconApp}
               <span class="hide-menu px-2 d-flex align-items-center">${appName}<span id='pastille_${appId}'></span></span>
             </span>`;
@@ -223,15 +223,15 @@
         const innerHtml = `<span class="hide-menu px-2">${appName}${pastilleParapheur}</span>`;
         if (app.AppUri) {
           const isContextMenuItem = app.AppUri !== "https://parapheurv5.sitiv.fr/";
-          const linkClass = `sidebar-link waves-effect waves-dark ${isContextMenuItem ? 'side-menu-item' : ''}`;
+          const linkClass = `sidebar-link context-menu-item waves-effect waves-dark ${isContextMenuItem ? 'side-menu-item' : ''}`;
           return `
-            <a class="${linkClass}" ${isContextMenuItem ? 'data-value1="0" data-value2="none"' : ''} id="${appId}" title="${app.AppDesc}" href="${app.AppUri}" target="${targetAttr}">
+            <a class="${linkClass}" ${isContextMenuItem ? 'data-value1="0" data-value2="none"' : ''}  data-text="${appName}" id="${appId}" title="${app.AppDesc}" href="${app.AppUri}" target="${targetAttr}">
               ${iconApp}
               ${innerHtml}
             </a>`;
         } else {
           return `
-            <span class="sidebar-link waves-effect waves-dark" id="${appId}" title="${app.AppDesc}">
+            <span class="sidebar-link waves-effect waves-dark" id="${appId}" title="${app.AppDesc}"  data-text="${appName}">
               ${iconApp}
               ${innerHtml}
             </span>`;
@@ -247,12 +247,13 @@
       if (modal) {
         const urlInput = modal.querySelector("#uriInputFavoris");
         const titleInput = modal.querySelector("#titleInputFavoris");
-        document.querySelectorAll(".side-menu-item").forEach((el) => {
+        document.querySelectorAll(".context-menu-item").forEach((el) => {
           el.addEventListener("contextmenu", (event) => {
             event.preventDefault();
             const addAppModal = new bootstrap.Modal(modal);
             urlInput.value = el.href;
-            titleInput.value = el.title;
+            titleInput.value = el.dataset.text;
+          
             addAppModal.show();
           });
         });

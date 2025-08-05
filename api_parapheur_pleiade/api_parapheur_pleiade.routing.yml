@@ -13,4 +13,5 @@ api_parapheur_pleiade.parapheur_entities_query:
     _title: 'IParapheur API Entities Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'

@@ -67,6 +67,7 @@ function api_user_pleiade_form_user_form_alter(array &$form, FormStateInterface 
     'field_nextcloud_api_user',
     'field_annuaireaccesstoken',
     'field_watchaaccesstoken',
+    'field_glpi_user_token',
   ];
 
   foreach ($fields as $field_name) {

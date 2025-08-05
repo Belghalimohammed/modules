@@ -13,6 +13,7 @@ api_glpi_pleiade.glpi_list_tickets:
     _title: 'Tickets Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 api_glpi_pleiade.getGLPITicketsCount:
@@ -22,6 +23,7 @@ api_glpi_pleiade.getGLPITicketsCount:
     _title: 'Tickets Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 
@@ -31,4 +33,47 @@ api_glpi_pleiade.glpi_tickets:
     _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::glpi_tickets'
     _title: 'Liste des tickets GLPI'
   requirements:
+    _role: 'authenticated'
     _permission: 'access content'
+
+
+api_glpi_pleiade.test1:
+  path: '/v1/api_glpi_pleiade/test1'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::test1'
+    _title: 'Tickets Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _access: 'TRUE'
+
+
+api_glpi_pleiade.test2:
+  path: '/v1/api_glpi_pleiade/test2'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::test2'
+    _title: 'Tickets Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _access: 'TRUE'
+
+api_glpi_pleiade.test3:
+  path: '/v1/api_glpi_pleiade/test3'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::test3'
+    _title: 'Tickets Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _access: 'TRUE'
+
+api_glpi_pleiade.test4:
+  path: '/v1/api_glpi_pleiade/test4'
+  defaults:
+    _controller: '\Drupal\api_glpi_pleiade\Controller\GlpiController::test4'
+    _title: 'Tickets Query'
+    _format: json
+  requirements:
+    _role: 'authenticated'
+    _access: 'TRUE'

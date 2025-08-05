@@ -6,7 +6,9 @@ api_glpi_pleiade_js:
     js/lib/moment.js: {}
     js/lib/jquery.dataTables.min.js: {}
     js/lib/dataTables.bootstrap5.min.js: {}  
+    "https://cdn.jsdelivr.net/npm/datatables.net-colresize-unofficial@1.7.2/jquery.dataTables.colResize.min.js": {}
   dependencies:
+    - core/jquery
     - core/drupal
     - core/once
 api_glpi_pleiade_css:
@@ -14,3 +16,4 @@ api_glpi_pleiade_css:
   css:
     theme:
       css/api_glpi_pleiade.css: {}
+      "https://cdn.jsdelivr.net/npm/datatables.net-colresize-unofficial@1.7.2/jquery.dataTables.colResize.min.css": {}

@@ -13,6 +13,7 @@ api_nextcloud_pleiade.notifs_query:
     _title: 'NC Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 
@@ -23,6 +24,7 @@ api_nextcloud_pleiade.generateToken:
     _title: 'NC Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 api_nextcloud_pleiade.pollToken:
@@ -32,4 +34,5 @@ api_nextcloud_pleiade.pollToken:
     _title: 'NC Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'

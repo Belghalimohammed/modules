@@ -29,6 +29,7 @@
           xhr.onload = function () {
             if (xhr.status === 200) {
               const donnees = xhr.response;
+             
               if (!donnees || donnees === "0") {
                 calendarEl.innerHTML = `
                   <div id="zimbra_agenda" class="col-lg-12">
@@ -46,9 +47,9 @@
 
               const events = [];
               const appts = donnees.userData.Body.SearchResponse.appt;
-              document.cookie = "nbOfTasks=" + appts.length;
+              document.cookie = "nbOfTasks=" + appts?.length;
 
-              appts.forEach((appt) => {
+              appts?.forEach((appt) => {
                 const fbValue = appt.ptst;
                 const colorMap = {
                   AC: "#008020",
@@ -166,7 +167,7 @@
                     const linkIcon = document.createElement("a");
                      const match = props.locationLink.match(/https?:\/\/[^\s]+/);
                     linkIcon.href = match[0];
-                    linkIcon.target = "_blank";
+                    linkIcon.target = "zimbratask";
                     linkIcon.innerHTML =
                       '<i class="position-absolute top-0 end-0 fa-solid fa-video text-black ms-1"></i>';
                     linkIcon.addEventListener("click", (e) => {

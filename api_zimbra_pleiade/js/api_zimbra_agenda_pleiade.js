@@ -191,7 +191,7 @@
                 eventClick: function (event) {
                   if (event.event.url) {
                     event.jsEvent.preventDefault();
-                    window.open(event.event.url, "_blank");
+                    window.open(event.event.url, "zimbratask");
                   }
                 },
               });
@@ -229,6 +229,14 @@
 
             xhr.send();
           };
+
+           document.getElementById("reloadZimbraMail").addEventListener(
+            "click",
+            function (e) {
+              e.preventDefault();
+              initializeAgenda();
+            }
+          );
 
           if (localStorage.getItem("zimbra") === "block") {
             initializeAgenda();

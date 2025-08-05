@@ -5,6 +5,7 @@ module_postit_pleiade.retrieve_postit:
     _title: ''
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 
@@ -15,4 +16,5 @@ module_postit_pleiade.save_postit:
     _title: ''
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'

@@ -8,7 +8,7 @@ const eventIdToRoomMap = {};
 const roomInfoCache = {};
 const userProfileCache = {};
 const DEFAULT_AVATAR_URL =
-  "https://pleiade-test.sitiv.fr/sites/default/files/default_images/blank-profile-picture-gb0f9530de_640.png";
+  "/sites/default/files/default_images/blank-profile-picture-gb0f9530de_640.png";
 
 async function fetchMatrixConfig() {
   const res = await fetch("/v1/api_watcha_pleiade/getConfig");
@@ -17,7 +17,6 @@ async function fetchMatrixConfig() {
     return null;
   }
   const { data } = await res.json();
-  console.log("config gone", data);
   return data;
 }
 

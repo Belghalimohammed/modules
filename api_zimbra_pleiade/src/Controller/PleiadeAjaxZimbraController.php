@@ -46,7 +46,7 @@ class PleiadeAjaxZimbraController extends ControllerBase
 
 // Now, build the full XML endpoint using the new query
 $mail_endpoint = sprintf(
-    '<SearchRequest xmlns="urn:zimbraMail" limit="%d"><query>%s</query></SearchRequest>',
+    '<SearchRequest xmlns="urn:zimbraMail" groupBy="message" limit="%d"><query>%s</query></SearchRequest>',
     $limit_mail,
     htmlspecialchars($query, ENT_XML1, 'UTF-8') // Use htmlspecialchars for security
 );

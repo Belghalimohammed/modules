@@ -6,6 +6,7 @@ module_actu_pleiade.actu_list:
     _title: 'Alerte à afficher'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 

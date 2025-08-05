@@ -1,0 +1,6 @@
+api_maarch_pleiade.admin:
+  title: 'API Pléiade - maarch module settings'
+  description: 'Page de configuration du module API maarch Pléiade'
+  parent: pleiade.group.admin
+  route_name: api_maarch_pleiade.settings
+  weight: 2

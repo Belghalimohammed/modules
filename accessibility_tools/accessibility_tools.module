@@ -49,7 +49,7 @@ function accessibility_tools_page_attachments(array &$attachments)
     $is_nextcloud =  ($account->get("field_isnextcloudactivated")->value && !empty($account->get('field_nextcloud_api_key')->value)) ? 1 : '0';
       // \Drupal::logger('api_glpi_pleiade')->alert("between " .($account->get("field_isnextcloudactivated")->value && !empty($account->get('field_nextcloud_api_key')->value)));
     $is_menu = $account->get("field_ismenuopened")->value ?? '';
-    $is_postit = $account->get("field_ispostitactivated")->value ?? '';
+    $is_postit = (bool) $account->get("field_ispostitactivated")->value;
     $js_code = <<<JS
   ( function() {
     
@@ -59,19 +59,16 @@ function accessibility_tools_page_attachments(array &$attachments)
     
       localStorage.setItem("isNextCloudActivated", "$is_nextcloud");
       localStorage.setItem("isWatchaActivated", "$is_watcha");
-    
-     if (!localStorage.getItem("isGlpiActivated")) {
-      localStorage.setItem("isGlpiActivated", "$is_glpi");
-    }
-     
-     if (!localStorage.getItem("menuOpen_")) {
-      localStorage.setItem("menuOpen_", "$is_menu");
-    }
+     localStorage.setItem("isPostitActivated", "$is_postit");
 
-    if (!localStorage.getItem("isPostitActivated")) {
-      localStorage.setItem("isPostitActivated", "$is_postit");
-    }
-  
+      localStorage.setItem("isGlpiActivated", "$is_glpi");
+    
+     
+ 
+      localStorage.setItem("menuOpen_", "$is_menu");
+ 
+
+    
   })();
 JS;
 

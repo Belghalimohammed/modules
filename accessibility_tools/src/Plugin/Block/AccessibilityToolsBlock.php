@@ -154,6 +154,7 @@ class AccessibilityToolsBlock extends BlockBase {
                       }
                       const data = await res.json();
                       const popup = window.open(data.login_url, '_blank', 'width=600,height=700');
+                  
                       if (popup) {
                         const checkClosed = setInterval(() => {
                           if (popup.closed) {

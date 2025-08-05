@@ -16,7 +16,7 @@
 
             const container = document.getElementById("areaSortable");
 
-            if (container ) {
+            if (container && window.innerWidth > 768) {
               new Sortable(container, {
                 animation: 150,
                 draggable: ".sortable-items", 

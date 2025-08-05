@@ -1,0 +1,8 @@
+services:
+  api_maarch_pleiade.maarch_service:
+    class: 'Drupal\api_maarch_pleiade\Service\MaarchService'
+   
+
+  Drupal\api_maarch_pleiade\Service\MaarchServiceInterface:
+    alias: 'api_maarch_pleiade.maarch_service'
+

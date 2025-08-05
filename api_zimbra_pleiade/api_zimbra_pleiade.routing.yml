@@ -13,6 +13,7 @@ api_zimbra_pleiade.zimbra_mails_query:
     _title: 'Zimbra API Mails Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 api_zimbra_pleiade.zimbra_tasks_query:
@@ -22,6 +23,7 @@ api_zimbra_pleiade.zimbra_tasks_query:
     _title: 'Zimbra API Tasks Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 api_zimbra_pleiade.get_full_calendar:
   path: '/calendar'
@@ -30,4 +32,5 @@ api_zimbra_pleiade.get_full_calendar:
     _title: 'Agenda Zimbra de la semaine'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'

@@ -1,0 +1,14 @@
+name: API Pléiade SSO Maarch
+type: module
+description: 'API connector Maarch for Pléiade dashboard'
+# package: Pleiade Maarch
+package: Pleiade
+# version: 8.x +
+core: 8.x
+core_version_requirement: ^9.5 || ^10
+dependencies:
+  - module_api_pleiade
+# Information 
+version: '1.0.x-dev'
+project: 'api_maarch_pleiade'
+datestamp: 1624364473

@@ -188,7 +188,7 @@ function createMessageCard({
 }
 
 function openRoomAndClean(roomId, watchaUrl) {
-  window.open(`${watchaUrl}${roomId}`, "watchaTab");
+  window.open(`${watchaUrl}${roomId}`, "watcha");
 }
 
 function updateTabTitle(inc, watchaBar) {

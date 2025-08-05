@@ -13,6 +13,7 @@ api_pastell_pleiade.pastell_entities_query:
     _title: 'Pastell API Entities Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 api_pastell_pleiade.pastell_flux_query:
@@ -22,6 +23,7 @@ api_pastell_pleiade.pastell_flux_query:
     _title: 'Pastell API Flux Query'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'
 
 api_pastell_pleiade.pastell_docs_lots:
@@ -30,4 +32,5 @@ api_pastell_pleiade.pastell_docs_lots:
     _form: '\Drupal\api_pastell_pleiade\Form\PleiadePastellDocLotsForm'
     _title: 'Pastell : Envoi de documents en lots'
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'

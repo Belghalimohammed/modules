@@ -1,0 +1,15 @@
+api_maarch_pleiade_js:
+  version: 1.x
+  js:
+   
+    js/script.js: {} 
+   
+  dependencies:
+    - core/drupal
+    - core/once
+    - accessibility_tools/slick
+api_maarch_pleiade_css:
+  version: 1.x
+  css:
+    theme:
+      css/style.css: {}

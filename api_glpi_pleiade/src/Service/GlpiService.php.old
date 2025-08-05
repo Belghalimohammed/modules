@@ -1,0 +1,228 @@
+<?php
+
+namespace Drupal\api_glpi_pleiade\Service;
+
+use DateTime;
+use Drupal\Component\Serialization\Json;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Drupal\user\Entity\User;
+use GuzzleHttp\Cookie\CookieJar;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+class GlpiService
+{
+
+    protected $settings_glpi;
+    protected $client;
+    protected $glpi_url;
+    protected $app_token;
+    public function __construct()
+    {
+        $moduleHandler = \Drupal::service('module_handler');
+        $this->settings_glpi = $moduleHandler->moduleExists('api_glpi_pleiade') ? \Drupal::config('api_glpi_pleiade.settings') : NULL;
+        $this->client = new Client();
+        $this->glpi_url = $this->settings_glpi->get('glpi_url');
+        $this->app_token = $this->settings_glpi->get('app_token');
+    }
+
+    public function getGLPITickets()
+    {
+        $sessionToken = $this->initGlpiSession();
+        if (!$sessionToken) {
+            return new JsonResponse(['error' => 'Failed to initialize GLPI session.'], 500);
+        }
+
+        $currentUserId =  1; //$this->getCurrentGlpiUser($sessionToken);
+        if (!$currentUserId) {
+            return new JsonResponse(['error' => 'Failed to retrieve current user from GLPI session.'], 500);
+        }
+        $url = $this->buildMyTicketsUrl($sessionToken, $currentUserId);
+        $rawTicketData = $this->sendGlpiGetRequest($url);
+
+        if (!$rawTicketData) {
+            return new JsonResponse(['error' => 'Failed to retrieve tickets from GLPI.'], 500);
+        }
+
+        $this->killGlpiSession($sessionToken);
+        $processedTickets = $this->processAndFilterTickets($rawTicketData, $currentUserId);
+
+        return new JsonResponse($processedTickets);
+    }
+
+    private function getCurrentGlpiUser($sessionToken)
+    {
+        $url = $this->glpi_url . '/apirest.php/getFullSession?session_token=' . $sessionToken . '&app_token=' . $this->app_token;
+        $sessionData = $this->sendGlpiGetRequest($url);
+        return $sessionData['session']['glpiID'] ?? null;
+    }
+
+    private function processAndFilterTickets(array $rawTicketData, int $currentUserId): array
+    {
+        $statusMap = [1 => "Nouveau", 2 => "En cours (attribué)", 3 => "En cours (planifié)", 4 => "En attente",];
+        $urgencyMap = [3 => 'Moyenne', 2 => 'Basse', 4 => "Haute"];
+        $priorityMap = [3 => 'Moyenne', 2 => 'Basse', 4 => "Haute", 5 => "Très Haute", 6 => "Majeure",];
+        $roleMap = [
+            '4' => 'Demandeur du ticket',
+            '5' => 'Responsable du ticket',
+            '66' => 'Observateur du ticket'
+        ];
+
+        $processedTickets = [];
+
+        if (isset($rawTicketData['data'])) {
+            foreach ($rawTicketData['data'] as $ticket) {
+                $userRoles = [];
+                foreach ($roleMap as $fieldId => $roleName) {
+                    if (isset($ticket[$fieldId]) ){ // && $ticket[$fieldId] == $currentUserId) {
+                        $userRoles[] = $roleName;
+                    }
+                }
+
+                if (empty($userRoles)) {
+                    continue;
+                }
+
+                $processedTickets[] = [
+
+                    'id' => $ticket['2'] ?? 'N/A',
+                    'name' => $ticket['1'] ?? 'N/A',
+                    'status' => $statusMap[$ticket['12']] ?? 'Inconnu',
+                    'start_date' => isset($ticket['15']) ? (new DateTime($ticket['15']))->format('d/m/Y H:i') : null,
+                    'last_modification_date' => isset($ticket['19']) ? (new DateTime($ticket['19']))->format('d/m/Y H:i') : null,
+                    'urgency' => $urgencyMap[$ticket['10']] ?? 'Inconnu',
+                    'priority' => $priorityMap[$ticket['3']] ?? 'Inconnu',
+                    'roles' => implode(', ', $userRoles)
+                ];
+            }
+        }
+
+        return array_reverse($processedTickets);
+    }
+
+    private function buildMyTicketsUrl($sessionToken, $currentUserId)
+    {
+        $criteria = [
+
+            [
+                'link' => 'AND',
+                'criteria' => [
+                    [
+                        'field' => 12,
+                        'searchtype' => 'equals',
+                        'value' => '1'
+                    ],
+                    [
+                        'link' => 'OR',
+                        'field' => 12,
+                        'searchtype' => 'equals',
+                        'value' => '2'
+                    ],
+                    [
+                        'link' => 'OR',
+                        'field' => 12,
+                        'searchtype' => 'equals',
+                        'value' => '3'
+                    ],
+                    [
+                        'link' => 'OR',
+                        'field' => 12,
+                        'searchtype' => 'equals',
+                        'value' => '4'
+                    ]
+                ]
+            ]
+        ];
+
+        $query = [
+            'criteria' => $criteria,
+
+            'forcedisplay' => ['1', '4', '5', '66', '10', '12', '14', '15', '19', '3'],
+            'range' => '0-999',
+            'sort' => 1,
+            'order' => 'DESC',
+            'session_token' => $sessionToken,
+            'app_token' => $this->app_token
+        ];
+
+        return $this->glpi_url . '/apirest.php/search/Ticket?' . http_build_query($query);
+    }
+
+    private function initGlpiSession()
+    {
+        $user_token = $this->getOrCreateGlpiUserToken();
+        $sessionCookieValue = $_COOKIE['lemonldap'] ?? '';
+
+        if (!$user_token) return null;
+
+        try {
+            $url = $this->glpi_url . '/apirest.php/initSession?app_token=' . $this->app_token . '&user_token=' . $user_token;
+            $clientRequest = $this->client->request('POST', $url, [
+                'headers' => ['Content-Type' => 'text/plain', 'Cookie' => 'lemonldap=' . $sessionCookieValue,],
+            ]);
+            $data = json_decode($clientRequest->getBody()->getContents());
+            return $data->session_token ?? null;
+        } catch (RequestException $e) {
+            \Drupal::logger('api_glpi_pleiade')->error('Erreur initSession: @error', ['@error' => $e->getMessage()]);
+            return null;
+        }
+    }
+
+    private function sendGlpiGetRequest($url)
+    {
+        $sessionCookieValue = $_COOKIE['lemonldap'] ?? '';
+
+        try {
+            $clientRequest = $this->client->request('GET', $url, [
+                'headers' => ['Content-Type' => 'text/plain', 'Cookie' => 'lemonldap=' . $sessionCookieValue,],
+            ]);
+
+            return Json::decode($clientRequest->getBody()->getContents());
+        } catch (RequestException $e) {
+            \Drupal::logger('api_glpi_pleiade')->error('Erreur GET: @error', ['@error' => $e->getMessage()]);
+            return null;
+        }
+    }
+
+    private function getOrCreateGlpiUserToken()
+    {
+        $current_user = \Drupal::currentUser();
+        $user = User::load($current_user->id());
+        $sessionCookieValue = $_COOKIE['lemonldap'] ?? '';
+
+        if (!$user || !($glpi_user_token = $user->get('field_glpi_user_token')->value)) {
+            $url = $this->glpi_url . '/getuserapitoken.php';
+            $cookieName = 'lemonldap';
+            $domain = parse_url($this->glpi_url, PHP_URL_HOST);
+
+            $client = new Client();
+            $cookieJar = CookieJar::fromArray([$cookieName => $sessionCookieValue], $domain);
+
+            try {
+                $response = $client->request('GET', $url, [
+                    'cookies' => $cookieJar,
+                    'http_errors' => false
+                ]);
+                $data = json_decode($response->getBody()->getContents());
+                $glpi_user_token = $data->api_token ?? null;
+                $user->set('field_glpi_user_token', $glpi_user_token);
+                $user->save();
+            } catch (RequestException $e) {
+                return null;
+            }
+        }
+
+        return $glpi_user_token;
+    }
+
+    private function killGlpiSession($sessionToken)
+    {
+        if (!$sessionToken) return;
+
+        try {
+            $url = $this->glpi_url . '/apirest.php/killSession?session_token=' . $sessionToken . '&app_token=' . $this->app_token;
+            $this->client->request('GET', $url);
+        } catch (RequestException $e) {
+        }
+    }
+}

@@ -5,4 +5,5 @@ datatable_pleiade.documents_recents:
     _title: 'Get Docuemnts recents'
     _format: json
   requirements:
+    _role: 'authenticated'
     _access: 'TRUE'

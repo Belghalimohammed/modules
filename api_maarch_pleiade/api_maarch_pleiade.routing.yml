@@ -1,0 +1,8 @@
+api_maarch_pleiade.settings:
+  path: "/admin/config/api_maarch_pleiade/settings"
+  defaults:
+    _form: '\Drupal\api_maarch_pleiade\Form\PleiadeConnectorMaarchConfig'
+    _title: "API Maarch Pléiade Settings"
+  requirements:
+    _permission: "administer site configuration"
+
